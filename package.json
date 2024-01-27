@@ -11,7 +11,7 @@
     "test:unit:watch": "vitest --config ./vitest.config.unit.mts",
     "test:e2e": "vitest run --config ./vitest.config.e2e.mts",
     "test:e2e:watch": "vitest --config ./vitest.config.e2e.mts",
-    "test:ci": "vitest --coverage"
+    "test:ci": "vitest run --coverage"
   },
   "engines": {
     "node": "20"
