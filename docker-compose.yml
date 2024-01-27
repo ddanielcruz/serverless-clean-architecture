@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: serverless
+      PGDATA: /data/postgres
+    volumes:
+      - ./.docker/postgres:/data/postgres
+    networks:
+      - serverless-network
+
+networks:
+  serverless-network:
+    driver: bridge
