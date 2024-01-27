@@ -1,4 +1,4 @@
-import { handlerPath } from '@/libs/handler-resolver'
+import { handlerPath } from '@/infrastructure/libs/handler-resolver'
 
 import schema from './schema'
 
