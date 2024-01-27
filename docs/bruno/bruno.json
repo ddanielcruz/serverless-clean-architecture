@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Serverless",
+  "type": "collection",
+  "presets": {
+    "requestType": "http",
+    "requestUrl": "{{baseUrl}}"
+  }
+}

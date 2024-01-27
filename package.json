@@ -4,6 +4,7 @@
   "main": "serverless.ts",
   "license": "MIT",
   "scripts": {
+    "dev": "serverless offline --httpPort=3333 --reloadHandler --verbose",
     "prepare": "husky",
     "test": "vitest run",
     "test:unit": "vitest run --config ./vitest.config.unit.mts",
@@ -33,6 +34,8 @@
     "json-schema-to-ts": "^1.6.5",
     "serverless": "^3.38.0",
     "serverless-esbuild": "^1.50.2",
+    "serverless-offline": "^13.3.3",
+    "serverless-prune-plugin": "^2.0.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^3.15.0",
     "typescript": "^5.3.3",

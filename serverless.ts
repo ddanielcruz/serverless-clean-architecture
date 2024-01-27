@@ -1,14 +1,21 @@
 import type { AWS } from '@serverless/typescript'
 
-import hello from '@/functions/hello'
+import * as functions from '@/functions'
 
 const serverlessConfiguration: AWS = {
   service: 'serverless-clean-architecture',
   frameworkVersion: '3',
-  plugins: ['serverless-esbuild'],
+  useDotenv: true,
+  plugins: [
+    'serverless-esbuild',
+    'serverless-offline',
+    'serverless-prune-plugin',
+  ],
   provider: {
     name: 'aws',
-    runtime: 'nodejs14.x',
+    runtime: 'nodejs20.x',
+    stage: 'offline',
+    region: 'us-east-1',
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
@@ -18,19 +25,28 @@ const serverlessConfiguration: AWS = {
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
     },
   },
-  // import the function via paths
-  functions: { hello },
-  package: { individually: true },
+  functions,
+  package: {
+    individually: true,
+  },
   custom: {
+    stage: '${opt:stage, self:provider.stage}',
     esbuild: {
       bundle: true,
       minify: false,
       sourcemap: true,
       exclude: ['aws-sdk'],
-      target: 'node14',
+      target: 'node20',
       define: { 'require.resolve': undefined },
       platform: 'node',
       concurrency: 10,
+    },
+    prune: {
+      automatic: true,
+      number: 3,
+    },
+    'serverless-offline': {
+      host: '0.0.0.0',
     },
   },
 }
