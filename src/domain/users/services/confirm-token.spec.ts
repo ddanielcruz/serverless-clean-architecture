@@ -7,9 +7,9 @@ import { InMemoryUsersRepository } from '@/test/repositories/in-memory-users-rep
 
 import type { ConfirmTokenRequest } from './confirm-token'
 import { ConfirmToken } from './confirm-token'
-import type { CreateSession } from './create-session'
 import { TokenAlreadyUsedError } from './errors/token-already-used-error'
 import { TokenExpiredError } from './errors/token-expired-error'
+import type { CreateSession } from '../../security/services/create-session'
 import {
   ConfirmationTokenType,
   type ConfirmationToken,

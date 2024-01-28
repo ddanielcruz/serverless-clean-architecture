@@ -1,9 +1,12 @@
 import { right, left, type Either } from '@/core/either'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 
-import type { CreateSession, Session } from './create-session'
 import { TokenAlreadyUsedError } from './errors/token-already-used-error'
 import { TokenExpiredError } from './errors/token-expired-error'
+import type {
+  CreateSession,
+  Session,
+} from '../../security/services/create-session'
 import type { ConfirmationTokensRepository } from '../repositories/confirmation-tokens-repository'
 import type { UsersRepository } from '../repositories/users-repository'
 

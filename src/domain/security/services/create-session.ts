@@ -1,4 +1,4 @@
-import type { Either } from '@/core/either'
+import { type Either } from '@/core/either'
 import type { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 export type CreateSessionRequest = { userId: UniqueEntityId }
