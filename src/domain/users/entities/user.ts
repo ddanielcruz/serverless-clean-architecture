@@ -43,4 +43,10 @@ export class User extends Entity<UserProps> {
       id,
     )
   }
+
+  verifyEmail(): void {
+    if (!this.isEmailVerified) {
+      this._props.emailVerifiedAt = new Date()
+    }
+  }
 }

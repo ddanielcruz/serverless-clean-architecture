@@ -16,4 +16,14 @@ export class InMemoryConfirmationTokensRepository
   async create(token: ConfirmationToken): Promise<void> {
     this.items.push(token)
   }
+
+  async findByToken(tokenValue: string): Promise<ConfirmationToken | null> {
+    return this.items.find((item) => item.token === tokenValue) ?? null
+  }
+
+  async save(token: ConfirmationToken): Promise<void> {
+    this.items = this.items.map((item) =>
+      item.id.equals(token.id) ? token : item,
+    )
+  }
 }

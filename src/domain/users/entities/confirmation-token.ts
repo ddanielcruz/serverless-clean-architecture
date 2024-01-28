@@ -30,8 +30,16 @@ export class ConfirmationToken extends Entity<ConfirmationTokenProps> {
     return this._props.type
   }
 
+  get isEmailVerificationToken(): boolean {
+    return this._props.type === ConfirmationTokenType.EmailVerification
+  }
+
   get expiresAt(): Date {
     return this._props.expiresAt
+  }
+
+  get isExpired(): boolean {
+    return this._props.expiresAt.getTime() < Date.now()
   }
 
   get usedAt(): Date | null {
@@ -62,5 +70,11 @@ export class ConfirmationToken extends Entity<ConfirmationTokenProps> {
       },
       id,
     )
+  }
+
+  use(): void {
+    if (!this.isUsed) {
+      this._props.usedAt = new Date()
+    }
   }
 }
