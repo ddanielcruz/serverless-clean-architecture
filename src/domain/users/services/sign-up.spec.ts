@@ -1,4 +1,5 @@
 import { right } from '@/core/either'
+import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { InMemoryUsersRepository } from '@/test/repositories/in-memory-users-repository'
 
 import { UserAlreadyExistsError } from './errors/user-already-exists-error'
@@ -21,7 +22,7 @@ describe('SignUp', () => {
     inMemoryUsersRepository = new InMemoryUsersRepository()
     sendEmailVerificationToken = {
       execute: vi.fn().mockResolvedValue(right(null)),
-    }
+    } as unknown as SendEmailVerificationToken
     sut = new SignUp(inMemoryUsersRepository, sendEmailVerificationToken)
   })
 
@@ -42,9 +43,7 @@ describe('SignUp', () => {
     const response = await sut.execute(request)
 
     expect(response.isRight()).toBe(true)
-    expect(sendEmailVerificationTokenSpy).toHaveBeenCalledWith({
-      userId: user.id,
-    })
+    expect(sendEmailVerificationTokenSpy).toHaveBeenCalledWith({ user })
   })
 
   it('returns an error if user already exists and email was verified', async () => {
@@ -78,7 +77,10 @@ describe('SignUp', () => {
     const response = await sut.execute(request)
     expect(response.isRight()).toBe(true)
     expect(sendEmailVerificationTokenSpy).toHaveBeenCalledWith({
-      userId: expect.any(Object),
+      user: expect.objectContaining({
+        id: expect.any(UniqueEntityId),
+        email: request.email,
+      }),
     })
   })
 })

@@ -1,7 +1,7 @@
 import type { EmailTemplate, EmailTemplateData } from './email-template'
 
 export interface SendEmailParams<TTemplate extends EmailTemplate> {
-  to: string[]
+  to: string | string[]
   subject: string
   template: TTemplate
   data: EmailTemplateData[TTemplate]

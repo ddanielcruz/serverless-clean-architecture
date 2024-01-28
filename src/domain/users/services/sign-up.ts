@@ -26,7 +26,7 @@ export class SignUp {
       // If used, but not verified, send another email verification token
       if (!userWithSameEmail.isEmailVerified) {
         await this.sendEmailVerificationToken.execute({
-          userId: userWithSameEmail.id,
+          user: userWithSameEmail,
         })
 
         return right(null)
@@ -40,7 +40,7 @@ export class SignUp {
     await this.usersRepository.create(user)
 
     // Send email verification token
-    await this.sendEmailVerificationToken.execute({ userId: user.id })
+    await this.sendEmailVerificationToken.execute({ user })
 
     return right(null)
   }
