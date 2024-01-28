@@ -7,6 +7,7 @@ export default defineConfig({
     globals: true,
     root: './',
     passWithNoTests: true,
+    setupFiles: ['./test/setup.ts'],
   },
   plugins: [tsConfigPaths()],
 })

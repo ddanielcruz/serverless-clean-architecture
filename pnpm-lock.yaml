@@ -11,6 +11,9 @@ dependencies:
   '@middy/http-json-body-parser':
     specifier: ^3.6.2
     version: 3.6.2
+  zod:
+    specifier: ^3.22.4
+    version: 3.22.4
 
 devDependencies:
   '@commitlint/cli':
@@ -37,6 +40,9 @@ devDependencies:
   '@vitest/coverage-v8':
     specifier: ^1.2.2
     version: 1.2.2(vitest@1.2.2)
+  dotenv:
+    specifier: ^16.4.1
+    version: 16.4.1
   esbuild:
     specifier: ^0.14.54
     version: 0.14.54
@@ -8258,3 +8264,7 @@ packages:
       compress-commons: 4.1.2
       readable-stream: 3.6.2
     dev: true
+
+  /zod@3.22.4:
+    resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
+    dev: false

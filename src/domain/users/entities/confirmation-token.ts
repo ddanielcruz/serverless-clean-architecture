@@ -1,3 +1,4 @@
+import { config } from '@/core/config'
 import { Entity } from '@/core/entities/entity'
 import type { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import type { Optional } from '@/core/types/optional'
@@ -46,8 +47,7 @@ export class ConfirmationToken extends Entity<ConfirmationTokenProps> {
   }
 
   get url(): string {
-    // TODO Get base URL from env
-    return `https://example.com/${this.token}`
+    return `${config.get('CONFIRMATION_TOKEN_URL')}/${this.token}`
   }
 
   constructor(
