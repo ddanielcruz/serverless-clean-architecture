@@ -1,13 +1,9 @@
-import tsConfigPaths from 'vite-tsconfig-paths'
 import { defineConfig } from 'vitest/config'
 
-export default defineConfig({
-  test: {
+import { makeConfig } from './vitest.config.mts'
+
+export default defineConfig(
+  makeConfig({
     include: ['**/*.spec.ts'],
-    globals: true,
-    root: './',
-    passWithNoTests: true,
-    setupFiles: ['./test/setup.ts'],
-  },
-  plugins: [tsConfigPaths()],
-})
+  }),
+)
