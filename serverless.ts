@@ -1,6 +1,6 @@
 import type { AWS } from '@serverless/typescript'
 
-import * as functions from '@/infrastructure/functions'
+import * as functions from '@/infrastructure/aws/functions'
 
 const serverlessConfiguration: AWS = {
   service: 'serverless-clean-architecture',
