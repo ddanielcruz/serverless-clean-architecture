@@ -16,6 +16,7 @@ const configSchema = {
     .enum(['development', 'production', 'test'])
     .default('development'),
   CONFIRMATION_TOKEN_URL: z.string().url(),
+  DATABASE_URL: z.string().url(),
 } as const
 
 type ConfigSchema = {

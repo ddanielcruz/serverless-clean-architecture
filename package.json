@@ -5,6 +5,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "serverless offline --httpPort=3333 --reloadHandler --verbose",
+    "migrations:generate": "drizzle-kit generate:pg",
+    "migrations:push": "ts-node -T src/infrastructure/database/drizzle/scripts/run-migrations.ts",
+    "migrations:drop": "drizzle-kit drop",
     "prepare": "husky",
     "test": "vitest run",
     "test:unit": "vitest run --config ./vitest.config.unit.mts",
@@ -19,6 +22,8 @@
   "dependencies": {
     "@middy/core": "^3.6.2",
     "@middy/http-json-body-parser": "^3.6.2",
+    "drizzle-orm": "^0.29.3",
+    "pg": "^8.11.3",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -29,8 +34,10 @@
     "@serverless/typescript": "^3.38.0",
     "@types/aws-lambda": "^8.10.132",
     "@types/node": "^20.11.8",
+    "@types/pg": "^8.11.0",
     "@vitest/coverage-v8": "^1.2.2",
     "dotenv": "^16.4.1",
+    "drizzle-kit": "^0.20.13",
     "esbuild": "^0.14.54",
     "eslint": "^8.56.0",
     "husky": "^9.0.6",
