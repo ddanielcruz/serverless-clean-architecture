@@ -32,6 +32,7 @@
     "@faker-js/faker": "^8.4.0",
     "@rocketseat/eslint-config": "^2.1.0",
     "@serverless/typescript": "^3.38.0",
+    "@testcontainers/postgresql": "^10.6.0",
     "@types/aws-lambda": "^8.10.132",
     "@types/node": "^20.11.8",
     "@types/pg": "^8.11.0",
