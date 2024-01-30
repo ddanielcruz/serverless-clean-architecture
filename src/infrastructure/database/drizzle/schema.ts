@@ -2,7 +2,7 @@ import { index, pgTable, text, timestamp } from 'drizzle-orm/pg-core'
 
 import type { ConfirmationTokenType } from '@/domain/users/entities/confirmation-token'
 
-export const usersTable = pgTable('users', {
+export const users = pgTable('users', {
   id: text('id').notNull().primaryKey(),
   name: text('name').notNull(),
   email: text('email').notNull().unique(),
@@ -10,13 +10,13 @@ export const usersTable = pgTable('users', {
   createdAt: timestamp('created_at').notNull().defaultNow(),
 })
 
-export const confirmationTokensTable = pgTable(
+export const confirmationTokens = pgTable(
   'confirmation_tokens',
   {
     id: text('id').notNull().primaryKey(),
     userId: text('user_id')
       .notNull()
-      .references(() => usersTable.id),
+      .references(() => users.id),
     token: text('token').notNull().unique(),
     type: text('type').$type<ConfirmationTokenType>().notNull(),
     expiresAt: timestamp('expires_at').notNull(),
