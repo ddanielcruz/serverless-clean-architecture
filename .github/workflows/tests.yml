@@ -32,4 +32,4 @@ jobs:
 
       # TODO Upload coverage to codecov
       - name: Run tests
-        run: pnpm test:ci
+        run: pnpm test:ci --pool=forks
