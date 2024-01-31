@@ -8,6 +8,7 @@ import {
   SendEmailVerificationToken,
 } from './send-email-verification-token'
 import type { EmailSender } from '../email/email-sender'
+import { EmailTemplate } from '../email/email-template'
 import { ConfirmationTokenType } from '../entities/confirmation-token'
 
 describe('SendEmailVerificationToken', () => {
@@ -84,6 +85,15 @@ describe('SendEmailVerificationToken', () => {
   })
 
   it('sends an email with the token URL', async () => {
-    // const sendSpy = vi.spyOn(emailSender, 'send')
+    const sendSpy = vi.spyOn(emailSender, 'send')
+    await sut.execute(request)
+    const [createdToken] = confirmationTokensRepository.items
+
+    expect(sendSpy).toHaveBeenCalledWith({
+      to: request.user.email,
+      subject: expect.any(String),
+      template: EmailTemplate.EmailVerification,
+      data: { url: createdToken.url },
+    })
   })
 })
