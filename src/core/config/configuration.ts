@@ -17,6 +17,12 @@ const configSchema = {
     .default('development'),
   CONFIRMATION_TOKEN_URL: z.string().url(),
   DATABASE_URL: z.string().url(),
+
+  // Security
+  ACCESS_TOKEN_SECRET: z.string(),
+  ACCESS_TOKEN_EXPIRATION: z.string().default('5m'),
+  REFRESH_TOKEN_SECRET: z.string(),
+  REFRESH_TOKEN_EXPIRATION: z.string().default('30d'),
 } as const
 
 type ConfigSchema = {

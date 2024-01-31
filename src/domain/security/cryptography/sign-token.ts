@@ -1,8 +1,10 @@
+export type SignTokenSecret = 'access-token' | 'refresh-token'
+
 export interface SignTokenParams {
   payload: {
     sub: string
   }
-  secret: 'access-token' | 'refresh-token'
+  secret: SignTokenSecret
 }
 
 export interface SignToken {
