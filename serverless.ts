@@ -9,6 +9,7 @@ const serverlessConfiguration: AWS = {
   plugins: [
     'serverless-esbuild',
     'serverless-offline',
+    'serverless-offline-ses-v2',
     'serverless-prune-plugin',
   ],
   provider: {
@@ -47,6 +48,9 @@ const serverlessConfiguration: AWS = {
     },
     'serverless-offline': {
       host: '0.0.0.0',
+    },
+    'serverless-offline-ses-v2': {
+      port: 8005,
     },
   },
 }
