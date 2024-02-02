@@ -4,6 +4,9 @@ import schema from './schema'
 
 export default {
   handler: `${handlerPath(__dirname)}/handler.main`,
+  environment: {
+    EMAIL_SENDER: '${env:EMAIL_SENDER}',
+  },
   events: [
     {
       http: {

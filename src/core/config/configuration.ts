@@ -17,6 +17,10 @@ const configSchema = {
     .default('development'),
   CONFIRMATION_TOKEN_URL: z.string().url(),
   DATABASE_URL: z.string().url(),
+  EMAIL_SENDER: z.string().email(),
+
+  // AWS
+  IS_OFFLINE: z.coerce.boolean().default(false),
 
   // Security
   ACCESS_TOKEN_SECRET: z.string(),
