@@ -60,6 +60,15 @@ describe('SESAdapter', () => {
       expect(command.input.Destination?.ToAddresses).toEqual(to)
     })
 
-    it.todo('renders the email template')
+    it('renders the email template', async () => {
+      const sendSpy = vi.spyOn(client, 'send')
+      await sut.send(params)
+
+      expect(sendSpy).toHaveBeenCalled()
+      const command = sendSpy.mock.calls[0][0] as SendEmailCommand
+      const htmlContent = command.input.Message?.Body?.Html?.Data
+      assert(htmlContent)
+      expect(htmlContent).toContain(params.data.url)
+    })
   })
 })
