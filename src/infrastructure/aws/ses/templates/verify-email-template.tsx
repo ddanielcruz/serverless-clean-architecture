@@ -17,7 +17,7 @@ interface VerifyEmailTemplateProps {
   url: string
 }
 
-export function VerifyEmailTemplate({ url }: VerifyEmailTemplateProps) {
+export default function VerifyEmailTemplate({ url }: VerifyEmailTemplateProps) {
   return (
     <Html>
       <Head>

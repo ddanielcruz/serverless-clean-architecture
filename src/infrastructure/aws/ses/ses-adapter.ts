@@ -10,7 +10,7 @@ import type { EmailTemplateData } from '@/domain/users/email/email-template'
 import { EmailTemplate } from '@/domain/users/email/email-template'
 
 import { SES_OFFLINE_OPTIONS } from './ses-constants'
-import { VerifyEmailTemplate } from './templates/verify-email-template'
+import VerifyEmailTemplate from './templates/verify-email-template'
 
 export class SESAdapter implements EmailSender {
   private readonly client: SESClient
