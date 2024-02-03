@@ -5,13 +5,14 @@ meta {
 }
 
 post {
-  url: {{baseUrl}}/hello
+  url: {{baseUrl}}/sign-up
   body: json
   auth: none
 }
 
 body:json {
   {
-    "name": "Daniel"
+    "name": "Daniel",
+    "email": "daniel@example.com"
   }
 }
