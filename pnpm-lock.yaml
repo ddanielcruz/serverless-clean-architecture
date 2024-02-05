@@ -11,9 +11,21 @@ dependencies:
   '@middy/core':
     specifier: ^3.6.2
     version: 3.6.2
+  '@middy/do-not-wait-for-empty-event-loop':
+    specifier: ^5.2.3
+    version: 5.2.3
+  '@middy/http-cors':
+    specifier: ^5.2.3
+    version: 5.2.3
   '@middy/http-json-body-parser':
     specifier: ^3.6.2
     version: 3.6.2
+  '@middy/http-security-headers':
+    specifier: ^5.2.3
+    version: 5.2.3
+  '@middy/sqs-partial-batch-failure':
+    specifier: ^5.2.3
+    version: 5.2.3
   '@react-email/components':
     specifier: 0.0.14
     version: 0.0.14(@types/react@18.2.51)(react@18.2.0)
@@ -2345,6 +2357,18 @@ packages:
     engines: {node: '>=14'}
     dev: false
 
+  /@middy/do-not-wait-for-empty-event-loop@5.2.3:
+    resolution: {integrity: sha512-1W3ZNQjWHpvM30g/qCp9aXzqRa4Nsr7gEHKi+J5nDg6Ls0cA2AYY7CPmjSQ76iBG8URVlDqL/DPxPhtcxLAzsg==}
+    engines: {node: '>=18'}
+    dev: false
+
+  /@middy/http-cors@5.2.3:
+    resolution: {integrity: sha512-6XspkyqusnBljFoNrYMpX/SfC+QsQsVqHfX8THnErExdKM4Omi+75Wfp9yyDrnZ+XVNBLJQh2Yz13IvGwZdmXA==}
+    engines: {node: '>=18'}
+    dependencies:
+      '@middy/util': 5.2.3
+    dev: false
+
   /@middy/http-json-body-parser@3.6.2:
     resolution: {integrity: sha512-vFvlVtR99zwnr9clQkS+D9PAwDcjH4owLpYZ3yAkNI3z40L4QMF/s+5KI5fUd5RvZgTakAeZ5Qf+1QwTrts+Gw==}
     engines: {node: '>=14'}
@@ -2352,9 +2376,26 @@ packages:
       '@middy/util': 3.6.2
     dev: false
 
+  /@middy/http-security-headers@5.2.3:
+    resolution: {integrity: sha512-hRElBIPO83wH4NXnlOm44M3IV3b8QpHXmTfOCm+xKeoJJSNp2E+OfqC7aFjMx90qqAiSIh1/TuodqliqIYYVqQ==}
+    engines: {node: '>=18'}
+    dependencies:
+      '@middy/util': 5.2.3
+    dev: false
+
+  /@middy/sqs-partial-batch-failure@5.2.3:
+    resolution: {integrity: sha512-s/B2qKZCkcwXZQS1CA14Io3GlHZVucphtLmPP8HmAqvOXl6n49GEfZAfp1YGsQV8JHPOEgAXxheY+b+9oJ0o7w==}
+    engines: {node: '>=18'}
+    dev: false
+
   /@middy/util@3.6.2:
     resolution: {integrity: sha512-zjyjF5BdSNnDlZbTvfQwwuUIs3H5PpN/R3wOAipXhaGD/SjpIUBcJJPLUQHySeHoZym1FC3MJYczJDbYQWKWdg==}
     engines: {node: '>=14'}
+    dev: false
+
+  /@middy/util@5.2.3:
+    resolution: {integrity: sha512-n00fLtK8rd2IM1ET8vhIwxrmaBHFGN0CERtnGLu8NTeCHCUTi5Z/7acuTw+i5xQZM8p4mEAKUu/M8SAUOp/Azw==}
+    engines: {node: '>=18'}
     dev: false
 
   /@next/env@14.0.5-canary.46:

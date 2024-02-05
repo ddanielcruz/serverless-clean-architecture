@@ -23,7 +23,11 @@
   "dependencies": {
     "@aws-sdk/client-ses": "^3.504.0",
     "@middy/core": "^3.6.2",
+    "@middy/do-not-wait-for-empty-event-loop": "^5.2.3",
+    "@middy/http-cors": "^5.2.3",
     "@middy/http-json-body-parser": "^3.6.2",
+    "@middy/http-security-headers": "^5.2.3",
+    "@middy/sqs-partial-batch-failure": "^5.2.3",
     "@react-email/components": "0.0.14",
     "@react-email/render": "0.0.12",
     "drizzle-orm": "^0.29.3",
