@@ -7,7 +7,7 @@ import {
   type HttpResponse,
   type HttpController,
   HttpCode,
-} from '../protocols/http-controller'
+} from '../../protocols/http-controller'
 
 export class SignUpController implements HttpController {
   private readonly serializer = z.object({

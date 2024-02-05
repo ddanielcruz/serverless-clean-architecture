@@ -5,7 +5,7 @@ import { UserAlreadyExistsError } from '@/domain/users/services/errors/user-alre
 import type { SignUp } from '@/domain/users/services/sign-up'
 
 import { SignUpController } from './sign-up-controller'
-import type { HttpRequest } from '../protocols/http-controller'
+import type { HttpRequest } from '../../protocols/http-controller'
 
 describe('SignUpController', () => {
   let sut: SignUpController

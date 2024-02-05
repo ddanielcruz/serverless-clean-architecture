@@ -1,6 +1,6 @@
 import type { APIGatewayProxyHandler } from 'aws-lambda'
 
-import { makeSignUpController } from '@/infrastructure/http/controllers/sign-up-controller-factory'
+import { makeSignUpController } from '@/infrastructure/http/controllers/sign-up/sign-up-controller-factory'
 
 import { middyfy } from '../../middy'
 
