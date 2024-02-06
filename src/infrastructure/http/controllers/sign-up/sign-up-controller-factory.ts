@@ -5,8 +5,10 @@ import { DrizzleConfirmationTokensRepository } from '@/infrastructure/database/d
 import { DrizzleUsersRepository } from '@/infrastructure/database/drizzle/repositories/drizzle-users-repository'
 
 import { SignUpController } from './sign-up-controller'
+import { ErrorHandlerMiddleware } from '../../middleware/error-handler-middleware'
+import type { HttpController } from '../../protocols/http-controller'
 
-export function makeSignUpController(): SignUpController {
+export function makeSignUpController(): HttpController {
   const drizzleUsersRepository = new DrizzleUsersRepository()
   const drizzleConfirmationTokensRepository =
     new DrizzleConfirmationTokensRepository()
@@ -18,5 +20,6 @@ export function makeSignUpController(): SignUpController {
   const signUp = new SignUp(drizzleUsersRepository, sendEmailVerificationToken)
   const signUpController = new SignUpController(signUp)
 
-  return signUpController
+  // TODO Create utils function to apply middleware
+  return new ErrorHandlerMiddleware(signUpController)
 }
