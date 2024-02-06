@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@aws-lambda-powertools/logger':
+    specifier: ^1.18.0
+    version: 1.18.0(@middy/core@3.6.2)
   '@aws-sdk/client-ses':
     specifier: ^3.504.0
     version: 3.504.0
@@ -47,6 +50,9 @@ dependencies:
   react-email:
     specifier: 2.0.0
     version: 2.0.0(eslint@8.56.0)(ts-node@10.9.2)
+  serialize-error:
+    specifier: ^11.0.3
+    version: 11.0.3
   serverless-offline-ses-v2:
     specifier: ^1.0.4
     version: 1.0.4
@@ -205,6 +211,23 @@ packages:
       '@aws-sdk/types': 3.496.0
       '@aws-sdk/util-utf8-browser': 3.259.0
       tslib: 1.14.1
+
+  /@aws-lambda-powertools/commons@1.18.0:
+    resolution: {integrity: sha512-oSnST8Wr3WZcT/FgCUzZYUFB+qYHWMAKS0GhWbUqHZMr7I5F75jq/JbeUUF16ShOMGgnEzs5oJjizBYVTI6Oww==}
+    dev: false
+
+  /@aws-lambda-powertools/logger@1.18.0(@middy/core@3.6.2):
+    resolution: {integrity: sha512-oB4FPMYNPjME6xsDfm7rxRBHwaH0dQl+bmO9cDbRfiCsZfQxKtTiSvROGt6AvRo+5rhPZyCdn5eAHqCJ4f5tVQ==}
+    peerDependencies:
+      '@middy/core': '>=3.x'
+    peerDependenciesMeta:
+      '@middy/core':
+        optional: true
+    dependencies:
+      '@aws-lambda-powertools/commons': 1.18.0
+      '@middy/core': 3.6.2
+      lodash.merge: 4.6.2
+    dev: false
 
   /@aws-sdk/client-cloudformation@3.501.0:
     resolution: {integrity: sha512-aDYafR4iJorrmftwVbNjUIKH0AM6RwNyyxBGN34R0xfLpP2fq6IPASulP56Eah2Fv14KVbYYFFDirKw4b8WPeA==}
@@ -10649,6 +10672,13 @@ packages:
       - supports-color
     dev: false
 
+  /serialize-error@11.0.3:
+    resolution: {integrity: sha512-2G2y++21dhj2R7iHAdd0FIzjGwuKZld+7Pl/bTU6YIkrC2ZMbVUjm+luj6A6V34Rv9XfKJDKpTWu9W4Gse1D9g==}
+    engines: {node: '>=14.16'}
+    dependencies:
+      type-fest: 2.19.0
+    dev: false
+
   /serialize-javascript@6.0.2:
     resolution: {integrity: sha512-Saa1xPByTTq2gdeFZYLLo+RFE35NHZkAbqZeWNd3BpzppeVisAqpDjcp8dyf6uIvEqJRd46jemmyA4iFIeVk8g==}
     dependencies:
@@ -11786,7 +11816,6 @@ packages:
   /type-fest@2.19.0:
     resolution: {integrity: sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==}
     engines: {node: '>=12.20'}
-    dev: true
 
   /type-fest@3.13.1:
     resolution: {integrity: sha512-tLq3bSNx+xSpwvAJnzrK0Ep5CLNWjvFTOp71URMaAEWBfRb9nnJiBoUe0tF8bI4ZFO3omgBR6NvnbzVUT3Ly4g==}

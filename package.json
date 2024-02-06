@@ -21,6 +21,7 @@
     "node": "20"
   },
   "dependencies": {
+    "@aws-lambda-powertools/logger": "^1.18.0",
     "@aws-sdk/client-ses": "^3.504.0",
     "@middy/core": "^3.6.2",
     "@middy/do-not-wait-for-empty-event-loop": "^5.2.3",
@@ -35,6 +36,7 @@
     "pg": "^8.11.3",
     "react": "^18.2.0",
     "react-email": "2.0.0",
+    "serialize-error": "^11.0.3",
     "serverless-offline-ses-v2": "^1.0.4",
     "zod": "^3.22.4"
   },

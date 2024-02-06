@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+import type { LogMessage, Logger } from '@/core/protocols/logger'
+
 import { ErrorHandlerMiddleware } from './error-handler-middleware'
 import type {
   HttpController,
@@ -16,13 +18,37 @@ class StubHttpController implements HttpController {
   }
 }
 
+class LoggerStub implements Logger {
+  info(message: LogMessage): void {
+    console.log(message)
+  }
+
+  error(message: Error | LogMessage): void {
+    console.error(message)
+  }
+
+  warn(message: LogMessage): void {
+    console.warn(message)
+  }
+
+  debug(message: LogMessage): void {
+    console.debug(message)
+  }
+
+  critical(message: LogMessage): void {
+    console.error(message)
+  }
+}
+
 describe('ErrorHandlerMiddleware', () => {
   let sut: ErrorHandlerMiddleware
   let controllerStub: StubHttpController
+  let loggerStub: Logger
 
   beforeEach(() => {
     controllerStub = new StubHttpController()
-    sut = new ErrorHandlerMiddleware(controllerStub)
+    loggerStub = new LoggerStub()
+    sut = new ErrorHandlerMiddleware(controllerStub, loggerStub)
   })
 
   it('returns 400 on Zod errors', async () => {
@@ -35,7 +61,9 @@ describe('ErrorHandlerMiddleware', () => {
   })
 
   it('returns 500 on unknown errors', async () => {
-    const logError = vi.spyOn(console, 'error').mockImplementationOnce(() => {})
+    const logError = vi
+      .spyOn(loggerStub, 'error')
+      .mockImplementationOnce(() => {})
     const error = new Error('unknown-error')
     vi.spyOn(controllerStub, 'handle').mockRejectedValueOnce(error)
     const response = await sut.handle({ body: { name: 'any-name' } })

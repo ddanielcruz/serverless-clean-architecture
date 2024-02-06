@@ -1,9 +1,22 @@
 import { ZodError } from 'zod'
 
-import type { HttpRequest, HttpResponse } from '../protocols/http-controller'
+import type { Logger } from '@/core/protocols/logger'
+
+import type {
+  HttpController,
+  HttpRequest,
+  HttpResponse,
+} from '../protocols/http-controller'
 import { HttpMiddleware } from '../protocols/http-middleware'
 
 export class ErrorHandlerMiddleware extends HttpMiddleware {
+  constructor(
+    controller: HttpController,
+    private readonly logger: Logger,
+  ) {
+    super(controller)
+  }
+
   async handle(request: HttpRequest): Promise<HttpResponse> {
     try {
       return await this.controller.handle(request)
@@ -18,8 +31,7 @@ export class ErrorHandlerMiddleware extends HttpMiddleware {
         }
       }
 
-      // TODO Log with logger service
-      console.error(error)
+      this.logger.error(error as Error)
       return {
         statusCode: 500,
         body: { message: 'Internal server error.' },
