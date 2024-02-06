@@ -15,6 +15,7 @@ export function apiGatewayHttpAdapter(
     return {
       statusCode: response.statusCode,
       body: response.body ? JSON.stringify(response.body) : '',
+      headers: response.headers,
     }
   }
 }
