@@ -10,28 +10,32 @@ export class LambdaLoggerAdapter implements Logger {
     this.logger = new LambdaLogger()
   }
 
-  info(message: LogMessage): void {
-    this.logger.info(message)
+  debug(message: LogMessage): void {
+    this.logger.debug(message)
   }
 
-  error(message: LogMessage | Error): void {
-    if (message instanceof Error) {
-      const serializedError = serializeError(message)
-      this.logger.error({ message: message.message, ...serializedError })
-    } else {
-      this.logger.error(message)
-    }
+  info(message: LogMessage): void {
+    this.logger.info(message)
   }
 
   warn(message: LogMessage): void {
     this.logger.warn(message)
   }
 
-  debug(message: LogMessage): void {
-    this.logger.debug(message)
+  error(message: LogMessage | Error): void {
+    this.logger.error(this.normalizeErrorMessage(message))
   }
 
-  critical(message: LogMessage): void {
-    this.logger.critical(message)
+  critical(message: LogMessage | Error): void {
+    this.logger.critical(this.normalizeErrorMessage(message))
+  }
+
+  private normalizeErrorMessage(message: LogMessage | Error): LogMessage {
+    if (message instanceof Error) {
+      const serializedError = serializeError(message)
+      return { message: message.message, ...serializedError }
+    }
+
+    return message
   }
 }

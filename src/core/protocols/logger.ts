@@ -4,9 +4,9 @@ export type LogMessage = {
 }
 
 export interface Logger {
-  info(message: LogMessage): void
-  error(message: LogMessage | Error): void
-  warn(message: LogMessage): void
   debug(message: LogMessage): void
-  critical(message: LogMessage): void
+  info(message: LogMessage): void
+  warn(message: LogMessage): void
+  error(message: LogMessage | Error): void
+  critical(message: LogMessage | Error): void
 }
