@@ -2,12 +2,12 @@ import { z } from 'zod'
 
 import type { SignUp } from '@/domain/users/services/sign-up'
 
-import {
-  type HttpRequest,
-  type HttpResponse,
-  type HttpController,
-  HttpCode,
+import type {
+  HttpRequest,
+  HttpResponse,
+  HttpController,
 } from '../../protocols/http-controller'
+import { conflict, noContent } from '../../utils/http-response'
 
 export class SignUpController implements HttpController {
   private readonly serializer = z.object({
@@ -17,18 +17,14 @@ export class SignUpController implements HttpController {
 
   constructor(private readonly signUp: SignUp) {}
 
-  // TODO Handle Zod error
   async handle(request: HttpRequest): Promise<HttpResponse> {
     const body = this.serializer.parse(request.body)
     const result = await this.signUp.execute(body)
 
     if (result.isLeft()) {
-      return {
-        statusCode: HttpCode.CONFLICT,
-        body: { message: result.value.message },
-      }
+      return conflict({ body: { message: result.value.message } })
     }
 
-    return { statusCode: HttpCode.NO_CONTENT }
+    return noContent()
   }
 }
