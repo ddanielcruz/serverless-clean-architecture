@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "serverless offline start --httpPort=3333 --reloadHandler --verbose",
     "dev:email": "email dev --dir src/infrastructure/aws/ses/templates",
+    "drizzle:studio": "drizzle-kit studio",
     "migrations:generate": "drizzle-kit generate:pg",
     "migrations:push": "ts-node -T src/infrastructure/database/drizzle/scripts/run-migrations.ts",
     "migrations:drop": "drizzle-kit drop",
