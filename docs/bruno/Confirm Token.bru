@@ -1,0 +1,17 @@
+meta {
+  name: Confirm Token
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/confirm-token
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "token": "63c9fdd1cb9ee7b73988c11e54b4932a1f4fc3fa0b113bfbb31a591986436721"
+  }
+}
