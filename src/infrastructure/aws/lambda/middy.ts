@@ -6,6 +6,8 @@ import httpSecurityHeaders from '@middy/http-security-headers'
 import sqsBatchFailure from '@middy/sqs-partial-batch-failure'
 import type { Handler } from 'aws-lambda'
 
+import { corsOptions } from '@/core/security/cors'
+
 type EventSource = 'api-gateway' | 'sqs'
 
 export const middyfy = (
@@ -16,7 +18,12 @@ export const middyfy = (
 
   if (source === 'api-gateway') {
     middleware.push(
-      httpCors(),
+      httpCors({
+        credentials: corsOptions.credentials,
+        headers: corsOptions.headers.join(', '),
+        methods: corsOptions.methods.join(', '),
+        origin: corsOptions.origin,
+      }),
       httpJsonBodyParser() as MiddlewareObj,
       httpSecurityHeaders(),
     )

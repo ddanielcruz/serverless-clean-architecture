@@ -27,6 +27,7 @@ const configSchema = {
   ACCESS_TOKEN_EXPIRATION: z.string().default('5m'),
   REFRESH_TOKEN_SECRET: z.string(),
   REFRESH_TOKEN_EXPIRATION: z.string().default('30d'),
+  CORS_ORIGIN: z.string().url().default('http://localhost:3000'),
 } as const
 
 type ConfigSchema = {
