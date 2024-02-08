@@ -1,4 +1,5 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import type { Logger } from '@/core/protocols/logger'
 import { makeConfirmationToken } from '@/test/factories/confirmation-token-factory'
 import { InMemoryConfirmationTokensRepository } from '@/test/repositories/in-memory-confirmation-tokens-repository'
 
@@ -15,6 +16,7 @@ describe('SendEmailVerificationToken', () => {
   let sut: SendEmailVerificationToken
   let confirmationTokensRepository: InMemoryConfirmationTokensRepository
   let emailSender: EmailSender
+  let logger: Logger
 
   const request: SendEmailVerificationTokenRequest = {
     user: {
@@ -28,9 +30,11 @@ describe('SendEmailVerificationToken', () => {
 
     confirmationTokensRepository = new InMemoryConfirmationTokensRepository()
     emailSender = { send: vi.fn() }
+    logger = { debug: vi.fn() } as unknown as Logger
     sut = new SendEmailVerificationToken(
       confirmationTokensRepository,
       emailSender,
+      logger,
     )
   })
 

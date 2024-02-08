@@ -1,7 +1,9 @@
 import { randomBytes } from 'node:crypto'
 
+import { config } from '@/core/config'
 import { right, type Either } from '@/core/either'
 import type { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import type { Logger } from '@/core/protocols/logger'
 
 import type { EmailSender } from '../email/email-sender'
 import { EmailTemplate } from '../email/email-template'
@@ -26,6 +28,7 @@ export class SendEmailVerificationToken {
   constructor(
     private readonly confirmationTokensRepository: ConfirmationTokensRepository,
     private readonly emailSender: EmailSender,
+    private readonly logger: Logger,
   ) {}
 
   async execute({
@@ -41,6 +44,14 @@ export class SendEmailVerificationToken {
       token: randomBytes(32).toString('hex'),
       expiresAt: this.getExpirationDate(),
     })
+
+    // Log generated token in development
+    if (config.isDevelopment) {
+      this.logger.debug({
+        message: `Email verification token for user ${user.id}`,
+        token: token.token,
+      })
+    }
 
     await this.confirmationTokensRepository.create(token)
 
