@@ -6,7 +6,7 @@ import httpSecurityHeaders from '@middy/http-security-headers'
 import sqsBatchFailure from '@middy/sqs-partial-batch-failure'
 import type { Handler } from 'aws-lambda'
 
-import { corsOptions } from '@/core/security/cors'
+import { corsOptions } from '@/infrastructure/http/config/cors'
 
 type EventSource = 'api-gateway' | 'sqs'
 

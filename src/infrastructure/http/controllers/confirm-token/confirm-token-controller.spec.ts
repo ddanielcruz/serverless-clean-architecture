@@ -8,7 +8,9 @@ import { TokenAlreadyUsedError } from '@/domain/users/services/errors/token-alre
 import { TokenExpiredError } from '@/domain/users/services/errors/token-expired-error'
 
 import { ConfirmTokenController } from './confirm-token-controller'
+import { sessionCookieOptions } from '../../config/cookie'
 import { HttpCode, type HttpRequest } from '../../protocols/http-controller'
+import { serializeCookie } from '../../utils/cookie'
 
 const session: Session = {
   accessToken: 'any-access-token',
@@ -67,8 +69,29 @@ describe('ConfirmTokenController', () => {
   it('returns 200 on success', async () => {
     const response = await sut.handle(httpRequest)
     expect(response).toEqual({
-      statusCode: HttpCode.OK,
-      body: { session },
+      statusCode: HttpCode.NO_CONTENT,
+      headers: {
+        'Set-Cookie': expect.any(String),
+      },
     })
+  })
+
+  it('returns the session tokens as a session cookie', async () => {
+    const response = await sut.handle(httpRequest)
+    const cookies = response.headers?.['Set-Cookie']
+    expect(cookies).toEqual(
+      [
+        serializeCookie(
+          'accessToken',
+          session.accessToken,
+          sessionCookieOptions,
+        ),
+        serializeCookie(
+          'refreshToken',
+          session.refreshToken,
+          sessionCookieOptions,
+        ),
+      ].join(', '),
+    )
   })
 })

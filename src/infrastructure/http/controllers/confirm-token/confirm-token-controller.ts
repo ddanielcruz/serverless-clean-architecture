@@ -1,15 +1,23 @@
 import { z } from 'zod'
 
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
+import type { Session } from '@/domain/security/services/create-session'
 import type { ConfirmToken } from '@/domain/users/services/confirm-token'
 import { TokenAlreadyUsedError } from '@/domain/users/services/errors/token-already-used-error'
 
+import { sessionCookieOptions } from '../../config/cookie'
 import type {
   HttpController,
   HttpRequest,
   HttpResponse,
 } from '../../protocols/http-controller'
-import { badRequest, conflict, notFound, ok } from '../../utils/http-response'
+import { serializeCookie } from '../../utils/cookie'
+import {
+  badRequest,
+  conflict,
+  noContent,
+  notFound,
+} from '../../utils/http-response'
 
 export class ConfirmTokenController implements HttpController {
   private readonly serializer = z.object({
@@ -23,7 +31,8 @@ export class ConfirmTokenController implements HttpController {
     const response = await this.confirmToken.execute({ token: body.token })
 
     if (response.isRight()) {
-      return ok({ body: response.value })
+      const cookies = this.serializeCookies(response.value.session)
+      return noContent({ headers: { 'Set-Cookie': cookies.join(', ') } })
     }
 
     const error = response.value
@@ -36,5 +45,21 @@ export class ConfirmTokenController implements HttpController {
     }
 
     return badRequest({ body: { message: error.message } })
+  }
+
+  private serializeCookies({ accessToken, refreshToken }: Session) {
+    const serializedAccessToken = serializeCookie(
+      'accessToken',
+      accessToken,
+      sessionCookieOptions,
+    )
+
+    const serializedRefreshToken = serializeCookie(
+      'refreshToken',
+      refreshToken,
+      sessionCookieOptions,
+    )
+
+    return [serializedAccessToken, serializedRefreshToken]
   }
 }
