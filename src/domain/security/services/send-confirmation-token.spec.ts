@@ -22,11 +22,13 @@ describe('SendConfirmationToken', () => {
     },
     token: {
       type: ConfirmationTokenType.Authentication,
-      expiresAt: new Date(),
+      expirationTime: 15 * 60, // 15 minutes
     },
   }
 
   beforeEach(() => {
+    vi.useFakeTimers()
+
     confirmationTokensRepository = new InMemoryConfirmationTokensRepository()
     emailSender = { send: vi.fn() }
     logger = { debug: vi.fn() } as unknown as Logger
@@ -35,6 +37,10 @@ describe('SendConfirmationToken', () => {
       emailSender,
       logger,
     )
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   it('deletes all unused confirmation tokens', async () => {
@@ -55,9 +61,25 @@ describe('SendConfirmationToken', () => {
         userId: request.user.id,
         type: request.token.type,
         token: expect.any(String),
-        expiresAt: request.token.expiresAt,
+        expiresAt: expect.any(Date),
         usedAt: null,
         createdAt: expect.any(Date),
+      }),
+    )
+  })
+
+  it('defines an expiration date in the future based on the expiration time', async () => {
+    const date = new Date(2024, 0, 1)
+    vi.setSystemTime(date)
+    const createSpy = vi.spyOn(confirmationTokensRepository, 'create')
+
+    await sut.execute(request)
+
+    expect(createSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        expiresAt: new Date(
+          date.getTime() + request.token.expirationTime * 1000,
+        ),
       }),
     )
   })

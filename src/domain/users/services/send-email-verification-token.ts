@@ -21,17 +21,10 @@ export class SendEmailVerificationToken extends SendConfirmationToken {
       user,
       token: {
         type: ConfirmationTokenType.EmailVerification,
-        expiresAt: this.getExpirationDate(),
+        expirationTime: EXPIRATION_TIME_IN_SECONDS,
       },
     })
 
     return right(null)
-  }
-
-  private getExpirationDate(): Date {
-    const expiresAt = new Date()
-    expiresAt.setSeconds(expiresAt.getSeconds() + EXPIRATION_TIME_IN_SECONDS)
-
-    return expiresAt
   }
 }

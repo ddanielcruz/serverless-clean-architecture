@@ -23,7 +23,7 @@ export type SendConfirmationTokenRequest = {
   }
   token: {
     type: ConfirmationTokenType
-    expiresAt: Date
+    expirationTime: number
   }
 }
 
@@ -47,7 +47,7 @@ export class SendConfirmationToken {
     const token = new ConfirmationToken({
       userId: user.id,
       type: request.token.type,
-      expiresAt: request.token.expiresAt,
+      expiresAt: this.getExpirationDate(request.token.expirationTime),
       token: randomBytes(32).toString('hex'),
     })
 
@@ -91,5 +91,12 @@ export class SendConfirmationToken {
       default:
         throw new Error(`Invalid token type: ${type}`)
     }
+  }
+
+  private getExpirationDate(expiresInSeconds: number): Date {
+    const expiresAt = new Date()
+    expiresAt.setSeconds(expiresAt.getSeconds() + expiresInSeconds)
+
+    return expiresAt
   }
 }

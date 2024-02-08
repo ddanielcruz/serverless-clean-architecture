@@ -13,7 +13,7 @@ export type SendAuthenticationTokenRequest = Pick<
 
 export type SendAuthenticationTokenResponse = Either<never, null>
 
-export const EXPIRATION_TIME_IN_SECONDS = 10 * 60 // 10 minutes
+const EXPIRATION_TIME_IN_SECONDS = 10 * 60 // 10 minutes
 
 export class SendAuthenticationToken extends SendConfirmationToken {
   async execute({
@@ -23,17 +23,10 @@ export class SendAuthenticationToken extends SendConfirmationToken {
       user,
       token: {
         type: ConfirmationTokenType.Authentication,
-        expiresAt: this.getExpirationDate(),
+        expirationTime: EXPIRATION_TIME_IN_SECONDS,
       },
     })
 
     return right(null)
-  }
-
-  private getExpirationDate(): Date {
-    const expiresAt = new Date()
-    expiresAt.setSeconds(expiresAt.getSeconds() + EXPIRATION_TIME_IN_SECONDS)
-
-    return expiresAt
   }
 }
