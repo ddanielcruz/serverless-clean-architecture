@@ -1,9 +1,9 @@
 import { right } from '@/core/either'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import type { SendEmailVerificationToken } from '@/domain/security/services/send-email-verification-token'
 import { InMemoryUsersRepository } from '@/test/repositories/in-memory-users-repository'
 
 import { UserAlreadyExistsError } from './errors/user-already-exists-error'
-import type { SendEmailVerificationToken } from './send-email-verification-token'
 import type { SignUpRequest } from './sign-up'
 import { SignUp } from './sign-up'
 import { User } from '../entities/user'

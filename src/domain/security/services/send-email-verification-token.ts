@@ -2,7 +2,7 @@ import { right, type Either } from '@/core/either'
 import type { SendConfirmationTokenRequest } from '@/domain/security/services/send-confirmation-token'
 import { SendConfirmationToken } from '@/domain/security/services/send-confirmation-token'
 
-import { ConfirmationTokenType } from '../entities/confirmation-token'
+import { ConfirmationTokenType } from '../../users/entities/confirmation-token'
 
 export type SendEmailVerificationTokenRequest = Pick<
   SendConfirmationTokenRequest,

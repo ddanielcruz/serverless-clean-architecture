@@ -1,7 +1,7 @@
 import { right, type Either, left } from '@/core/either'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
+import type { SendAuthenticationToken } from '@/domain/security/services/send-authentication-token'
 
-import type { SendAuthenticationToken } from './send-authentication-token'
 import type { UsersRepository } from '../repositories/users-repository'
 
 export type SignInRequest = {

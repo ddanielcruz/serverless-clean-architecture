@@ -1,4 +1,4 @@
-import { SendEmailVerificationToken } from '@/domain/users/services/send-email-verification-token'
+import { SendEmailVerificationToken } from '@/domain/security/services/send-email-verification-token'
 import { SignUp } from '@/domain/users/services/sign-up'
 import { LambdaLoggerAdapter } from '@/infrastructure/aws/lambda/adapters/lambda-logger-adapter'
 import { SESAdapter } from '@/infrastructure/aws/ses/ses-adapter'

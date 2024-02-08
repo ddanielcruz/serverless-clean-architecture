@@ -1,9 +1,9 @@
 import { right } from '@/core/either'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
+import type { SendAuthenticationToken } from '@/domain/security/services/send-authentication-token'
 import { makeUser } from '@/test/factories/user-factory'
 import { InMemoryUsersRepository } from '@/test/repositories/in-memory-users-repository'
 
-import type { SendAuthenticationToken } from './send-authentication-token'
 import { SignIn } from './sign-in'
 
 describe('SignIn', () => {

@@ -1,7 +1,7 @@
 import { right, type Either, left } from '@/core/either'
+import type { SendEmailVerificationToken } from '@/domain/security/services/send-email-verification-token'
 
 import { UserAlreadyExistsError } from './errors/user-already-exists-error'
-import type { SendEmailVerificationToken } from './send-email-verification-token'
 import { User } from '../entities/user'
 import type { UsersRepository } from '../repositories/users-repository'
 
