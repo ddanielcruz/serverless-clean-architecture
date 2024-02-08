@@ -1,5 +1,6 @@
 import { ConfirmToken } from '@/domain/security/services/confirm-token'
 import { CreateSession } from '@/domain/security/services/create-session'
+import { VerifyUserEmail } from '@/domain/users/services/verify-user-email'
 import { JsonWebTokenAdapter } from '@/infrastructure/cryptography/jsonwebtoken-adapter'
 import { DrizzleConfirmationTokensRepository } from '@/infrastructure/database/drizzle/repositories/drizzle-confirmation-tokens-repository'
 import { DrizzleUsersRepository } from '@/infrastructure/database/drizzle/repositories/drizzle-users-repository'
@@ -14,10 +15,11 @@ export function makeConfirmTokenController(): HttpController {
   const drizzleUsersRepository = new DrizzleUsersRepository()
   const jwtAdapter = new JsonWebTokenAdapter()
   const createSession = new CreateSession(jwtAdapter)
+  const verifyUserEmail = new VerifyUserEmail(drizzleUsersRepository)
   const confirmToken = new ConfirmToken(
     drizzleConfirmationTokensRepository,
-    drizzleUsersRepository,
     createSession,
+    verifyUserEmail,
   )
   const confirmTokenController = new ConfirmTokenController(confirmToken)
 

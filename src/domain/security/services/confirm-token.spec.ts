@@ -1,9 +1,9 @@
-import { right } from '@/core/either'
+import { left, right } from '@/core/either'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
+import type { VerifyUserEmail } from '@/domain/users/services/verify-user-email'
 import { makeConfirmationToken } from '@/test/factories/confirmation-token-factory'
 import { makeUser } from '@/test/factories/user-factory'
 import { InMemoryConfirmationTokensRepository } from '@/test/repositories/in-memory-confirmation-tokens-repository'
-import { InMemoryUsersRepository } from '@/test/repositories/in-memory-users-repository'
 
 import type { ConfirmTokenRequest } from './confirm-token'
 import { ConfirmToken } from './confirm-token'
@@ -19,15 +19,14 @@ import type { User } from '../../users/entities/user'
 describe('ConfirmToken', () => {
   let sut: ConfirmToken
   let confirmationTokensRepository: InMemoryConfirmationTokensRepository
-  let usersRepository: InMemoryUsersRepository
   let createSession: CreateSession
   let user: User
   let confirmationToken: ConfirmationToken
   let request: ConfirmTokenRequest
+  let verifyUserEmail: VerifyUserEmail
 
   beforeEach(() => {
     confirmationTokensRepository = new InMemoryConfirmationTokensRepository()
-    usersRepository = new InMemoryUsersRepository()
     createSession = {
       execute: vi.fn().mockResolvedValue(
         right({
@@ -38,14 +37,16 @@ describe('ConfirmToken', () => {
         }),
       ),
     } as unknown as CreateSession
+    verifyUserEmail = {
+      execute: vi.fn().mockResolvedValue(right(null)),
+    } as unknown as VerifyUserEmail
     sut = new ConfirmToken(
       confirmationTokensRepository,
-      usersRepository,
       createSession,
+      verifyUserEmail,
     )
 
     user = makeUser()
-    usersRepository.items.push(user)
     confirmationToken = makeConfirmationToken({ userId: user.id })
     confirmationTokensRepository.items.push(confirmationToken)
     request = { token: confirmationToken.token }
@@ -83,31 +84,31 @@ describe('ConfirmToken', () => {
   })
 
   it('verifies the user email if token type is EmailVerification', async () => {
+    const executeSpy = vi.spyOn(verifyUserEmail, 'execute')
     await sut.execute(request)
-    expect(user.isEmailVerified).toBe(true)
-  })
-
-  it('finds confirmation token user by userId', async () => {
-    const findByIdSpy = vi.spyOn(usersRepository, 'findById')
-    await sut.execute(request)
-    expect(findByIdSpy).toHaveBeenCalledWith(confirmationToken.userId)
+    expect(executeSpy).toHaveBeenCalledWith({
+      userId: confirmationToken.userId,
+    })
   })
 
   it('returns ResourceNotFound if confirmation token user is not found', async () => {
-    usersRepository.items = []
+    vi.spyOn(verifyUserEmail, 'execute').mockResolvedValue(
+      left(new ResourceNotFoundError()),
+    )
     const response = await sut.execute(request)
     expect(response.isLeft()).toBe(true)
     expect(response.value).toBeInstanceOf(ResourceNotFoundError)
   })
 
   it('does not verify user email if token type is not EmailVerification', async () => {
+    const executeSpy = vi.spyOn(verifyUserEmail, 'execute')
     confirmationToken = makeConfirmationToken({
       userId: user.id,
       type: ConfirmationTokenType.Authentication,
     })
     confirmationTokensRepository.items.push(confirmationToken)
     await sut.execute({ token: confirmationToken.token })
-    expect(user.isEmailVerified).toBe(false)
+    expect(executeSpy).not.toHaveBeenCalled()
   })
 
   it('uses the token on success', async () => {

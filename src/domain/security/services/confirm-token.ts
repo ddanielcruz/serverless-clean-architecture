@@ -1,11 +1,11 @@
 import { right, left, type Either } from '@/core/either'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
+import type { VerifyUserEmail } from '@/domain/users/services/verify-user-email'
 
 import type { CreateSession, Session } from './create-session'
 import { TokenAlreadyUsedError } from './errors/token-already-used-error'
 import { TokenExpiredError } from './errors/token-expired-error'
 import type { ConfirmationTokensRepository } from '../../users/repositories/confirmation-tokens-repository'
-import type { UsersRepository } from '../../users/repositories/users-repository'
 
 export type ConfirmTokenRequest = {
   token: string
@@ -19,8 +19,8 @@ export type ConfirmTokenResponse = Either<
 export class ConfirmToken {
   constructor(
     private readonly confirmationTokensRepository: ConfirmationTokensRepository,
-    private readonly usersRepository: UsersRepository,
     private readonly createSession: CreateSession,
+    private readonly verifyUserEmail: VerifyUserEmail,
   ) {}
 
   async execute(request: ConfirmTokenRequest): Promise<ConfirmTokenResponse> {
@@ -43,13 +43,13 @@ export class ConfirmToken {
 
     // Verify user email if it's an email verification token
     if (token.isEmailVerificationToken) {
-      const user = await this.usersRepository.findById(token.userId)
-      if (!user) {
-        return left(new ResourceNotFoundError())
-      }
+      const response = await this.verifyUserEmail.execute({
+        userId: token.userId,
+      })
 
-      user.verifyEmail()
-      await this.usersRepository.save(user)
+      if (response.isLeft()) {
+        return left(response.value)
+      }
     }
 
     // Create a new session
