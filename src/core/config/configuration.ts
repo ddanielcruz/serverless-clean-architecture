@@ -26,11 +26,11 @@ const configSchema = {
 
   // Security
   ACCESS_TOKEN_SECRET: z.string(),
-  ACCESS_TOKEN_EXPIRATION: z.string().default('5m'),
+  ACCESS_TOKEN_EXPIRATION: z.string(),
   REFRESH_TOKEN_SECRET: z.string(),
-  REFRESH_TOKEN_EXPIRATION: z.string().default('30d'),
-  CORS_ORIGIN: z.string().url().default('http://localhost:3000'),
-  COOKIE_DOMAIN: z.string().default('localhost'),
+  REFRESH_TOKEN_EXPIRATION: z.string(),
+  CORS_ORIGIN: z.string().url(),
+  COOKIE_DOMAIN: z.string(),
 } as const
 
 type ConfigSchema = {
