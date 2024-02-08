@@ -10,3 +10,11 @@ export interface Logger {
   error(message: LogMessage | Error): void
   critical(message: LogMessage | Error): void
 }
+
+export enum LogLevel {
+  Debug = 'debug',
+  Info = 'info',
+  Warn = 'warn',
+  Error = 'error',
+  Critical = 'critical',
+}

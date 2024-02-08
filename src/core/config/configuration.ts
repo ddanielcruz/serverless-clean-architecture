@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 import { InvalidConfigurationError } from './invalid-configuration-error'
+import { LogLevel } from '../protocols/logger'
 
 /**
  * Configuration schema. The keys are the environment variable names and the
@@ -18,6 +19,7 @@ const configSchema = {
   CONFIRMATION_TOKEN_URL: z.string().url(),
   DATABASE_URL: z.string().url(),
   EMAIL_SENDER: z.string().email(),
+  LOG_LEVEL: z.nativeEnum(LogLevel).default(LogLevel.Info),
 
   // AWS
   IS_OFFLINE: z.coerce.boolean().default(false),
@@ -40,6 +42,14 @@ type ConfigSchema = {
  * validation.
  */
 export class Configuration {
+  get isDevelopment() {
+    return this.get('NODE_ENV') === 'development'
+  }
+
+  get isProduction() {
+    return this.get('NODE_ENV') === 'production'
+  }
+
   /**
    * Get a configuration value from the environment.
    *
