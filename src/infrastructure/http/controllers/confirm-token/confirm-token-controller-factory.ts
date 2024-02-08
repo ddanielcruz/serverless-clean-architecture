@@ -1,5 +1,5 @@
+import { ConfirmToken } from '@/domain/security/services/confirm-token'
 import { CreateSession } from '@/domain/security/services/create-session'
-import { ConfirmToken } from '@/domain/users/services/confirm-token'
 import { JsonWebTokenAdapter } from '@/infrastructure/cryptography/jsonwebtoken-adapter'
 import { DrizzleConfirmationTokensRepository } from '@/infrastructure/database/drizzle/repositories/drizzle-confirmation-tokens-repository'
 import { DrizzleUsersRepository } from '@/infrastructure/database/drizzle/repositories/drizzle-users-repository'

@@ -1,9 +1,9 @@
 import { z } from 'zod'
 
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
+import type { ConfirmToken } from '@/domain/security/services/confirm-token'
 import type { Session } from '@/domain/security/services/create-session'
-import type { ConfirmToken } from '@/domain/users/services/confirm-token'
-import { TokenAlreadyUsedError } from '@/domain/users/services/errors/token-already-used-error'
+import { TokenAlreadyUsedError } from '@/domain/security/services/errors/token-already-used-error'
 
 import { sessionCookieOptions } from '../../config/cookie'
 import type {

@@ -2,10 +2,10 @@ import { ZodError } from 'zod'
 
 import { left, right } from '@/core/either'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
+import type { ConfirmToken } from '@/domain/security/services/confirm-token'
 import type { Session } from '@/domain/security/services/create-session'
-import type { ConfirmToken } from '@/domain/users/services/confirm-token'
-import { TokenAlreadyUsedError } from '@/domain/users/services/errors/token-already-used-error'
-import { TokenExpiredError } from '@/domain/users/services/errors/token-expired-error'
+import { TokenAlreadyUsedError } from '@/domain/security/services/errors/token-already-used-error'
+import { TokenExpiredError } from '@/domain/security/services/errors/token-expired-error'
 
 import { ConfirmTokenController } from './confirm-token-controller'
 import { sessionCookieOptions } from '../../config/cookie'

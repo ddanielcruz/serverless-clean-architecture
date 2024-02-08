@@ -7,14 +7,14 @@ import { InMemoryUsersRepository } from '@/test/repositories/in-memory-users-rep
 
 import type { ConfirmTokenRequest } from './confirm-token'
 import { ConfirmToken } from './confirm-token'
+import type { CreateSession } from './create-session'
 import { TokenAlreadyUsedError } from './errors/token-already-used-error'
 import { TokenExpiredError } from './errors/token-expired-error'
-import type { CreateSession } from '../../security/services/create-session'
 import {
   ConfirmationTokenType,
   type ConfirmationToken,
-} from '../entities/confirmation-token'
-import type { User } from '../entities/user'
+} from '../../users/entities/confirmation-token'
+import type { User } from '../../users/entities/user'
 
 describe('ConfirmToken', () => {
   let sut: ConfirmToken
