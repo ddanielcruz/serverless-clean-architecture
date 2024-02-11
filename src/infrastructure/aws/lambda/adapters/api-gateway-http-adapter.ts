@@ -9,7 +9,14 @@ export function apiGatewayHttpAdapter(
   controller: HttpController,
 ): APIGatewayProxyHandler {
   return async (event) => {
-    const request: HttpRequest = { body: event.body }
+    const request: HttpRequest = {
+      body: event.body,
+      headers: sanitizeMapProperty(event.headers),
+      query: event.queryStringParameters
+        ? sanitizeMapProperty(event.queryStringParameters)
+        : {},
+    }
+
     const response = await controller.handle(request)
 
     return {
@@ -18,4 +25,19 @@ export function apiGatewayHttpAdapter(
       headers: response.headers,
     }
   }
+}
+
+function sanitizeMapProperty(
+  raw: Record<string, string | undefined>,
+): Record<string, string> {
+  return Object.entries(raw).reduce<Record<string, string>>(
+    (acc, [key, value]) => {
+      if (value) {
+        acc[key] = value
+      }
+
+      return acc
+    },
+    {},
+  )
 }

@@ -1,7 +1,9 @@
 import type { HttpCode } from './http-code'
 
 export interface HttpRequest {
-  body?: unknown
+  body: unknown
+  headers: Record<string, string>
+  query: Record<string, string>
 }
 
 export interface HttpResponse {

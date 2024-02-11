@@ -18,10 +18,63 @@ describe('apiGatewayHttpAdapter', () => {
   let controllerStub: HttpController
   const apiEvent = {
     body: { name: 'any-name' },
+    headers: { 'Content-Type': 'application/json' },
+    queryStringParameters: { 'any-query': 'any-value' },
   } as unknown as APIGatewayProxyEvent
 
   beforeEach(() => {
     controllerStub = new HttpControllerStub()
+  })
+
+  it('invokes controller with correct parameters', async () => {
+    const handleSpy = vi.spyOn(controllerStub, 'handle')
+    const handler = apiGatewayHttpAdapter(controllerStub)
+    await handler(apiEvent, null as never, null as never)
+    expect(handleSpy).toHaveBeenCalledWith({
+      body: apiEvent.body,
+      headers: apiEvent.headers,
+      query: apiEvent.queryStringParameters,
+    })
+  })
+
+  it('sets query to an empty map when no query parameters are provided', async () => {
+    const handleSpy = vi.spyOn(controllerStub, 'handle')
+    const handler = apiGatewayHttpAdapter(controllerStub)
+    await handler(
+      { ...apiEvent, queryStringParameters: null },
+      null as never,
+      null as never,
+    )
+    expect(handleSpy).toHaveBeenCalledWith({
+      body: apiEvent.body,
+      headers: apiEvent.headers,
+      query: {},
+    })
+  })
+
+  it('sanitizes undefined values on map properties', async () => {
+    const handleSpy = vi.spyOn(controllerStub, 'handle')
+    const handler = apiGatewayHttpAdapter(controllerStub)
+    await handler(
+      {
+        ...apiEvent,
+        headers: {
+          ...apiEvent.headers,
+          'X-Undefined-Header': undefined,
+        },
+        queryStringParameters: {
+          ...apiEvent.queryStringParameters,
+          'undefined-query': undefined,
+        },
+      },
+      null as never,
+      null as never,
+    )
+    expect(handleSpy).toHaveBeenCalledWith({
+      body: apiEvent.body,
+      headers: { 'Content-Type': 'application/json' },
+      query: apiEvent.queryStringParameters,
+    })
   })
 
   it('adapts the controller response to API gateway format', async () => {
