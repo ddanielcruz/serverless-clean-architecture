@@ -10,7 +10,8 @@ import type { EmailTemplateData } from '@/domain/users/email/email-template'
 import { EmailTemplate } from '@/domain/users/email/email-template'
 
 import { SES_OFFLINE_OPTIONS } from './ses-constants'
-import VerifyEmailTemplate from './templates/verify-email-template'
+import ConfirmAuthenticationToken from './templates/confirm-authentication-token'
+import VerifyEmail from './templates/verify-email'
 
 export class SESAdapter implements EmailSender {
   private readonly client: SESClient
@@ -56,7 +57,9 @@ export class SESAdapter implements EmailSender {
   ): Promise<string> {
     switch (template) {
       case EmailTemplate.EmailVerification:
-        return renderAsync(VerifyEmailTemplate(data))
+        return renderAsync(VerifyEmail(data))
+      case EmailTemplate.Authentication:
+        return renderAsync(ConfirmAuthenticationToken(data))
       default:
         throw new Error(`Template ${template} not found`)
     }

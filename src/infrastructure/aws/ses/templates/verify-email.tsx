@@ -12,7 +12,7 @@ import {
 } from '@react-email/components'
 import * as React from 'react'
 
-interface VerifyEmailTemplateProps {
+interface VerifyEmailProps {
   url: string
 }
 
@@ -63,9 +63,9 @@ const styles: Record<string, React.CSSProperties> = {
   },
 }
 
-export default function VerifyEmailTemplate({
+export default function VerifyEmail({
   url = 'https://example.com',
-}: VerifyEmailTemplateProps) {
+}: VerifyEmailProps) {
   return (
     <Html>
       <Head>
