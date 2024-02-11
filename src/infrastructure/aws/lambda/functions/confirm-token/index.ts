@@ -12,7 +12,7 @@ export default {
   events: [
     {
       http: {
-        method: 'post',
+        method: 'get',
         path: '/confirm-token',
       },
     },

@@ -21,7 +21,9 @@ describe('ConfirmTokenController', () => {
   let sut: ConfirmTokenController
   let confirmToken: ConfirmToken
   const httpRequest = {
-    body: { token: 'any-token' },
+    body: null,
+    query: { token: 'any-token' },
+    headers: {},
   } satisfies HttpRequest
 
   beforeEach(() => {
@@ -32,7 +34,7 @@ describe('ConfirmTokenController', () => {
   })
 
   it('throws a ZodError on invalid request', async () => {
-    const promise = sut.handle({})
+    const promise = sut.handle({ ...httpRequest, query: {} })
     await expect(promise).rejects.toThrow(ZodError)
   })
 

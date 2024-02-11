@@ -4,14 +4,18 @@ meta {
   seq: 1
 }
 
-post {
-  url: {{baseUrl}}/confirm-token
-  body: json
+get {
+  url: {{baseUrl}}/confirm-token?token=788a588abb09e16ca866626bbd6fad17bcfdde1dba72b2cf41dce1b6f3d3aec5
+  body: none
   auth: none
+}
+
+query {
+  token: 788a588abb09e16ca866626bbd6fad17bcfdde1dba72b2cf41dce1b6f3d3aec5
 }
 
 body:json {
   {
-    "token": "8d285d141fe73498e25e88e9b070ad54650904662ce26a0d95c511ed009f0794"
+    "token": "b7913ddb88b9a4baf2d99c7ea9f54f5a3d06bd9fca2358bfeb74ccf471e6c232"
   }
 }

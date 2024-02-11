@@ -12,6 +12,8 @@ describe('SignInController', () => {
   let signInStub: SignIn
   const httpRequest = {
     body: { email: 'daniel@example.com' },
+    headers: {},
+    query: {},
   } satisfies HttpRequest
 
   beforeEach(() => {
@@ -25,7 +27,7 @@ describe('SignInController', () => {
     'throws if request body is invalid: %o',
     async (override) => {
       const body = Object.assign({}, httpRequest.body, override)
-      const promise = sut.handle({ body })
+      const promise = sut.handle({ ...httpRequest, body })
 
       await expect(promise).rejects.toThrow(ZodError)
     },

@@ -27,8 +27,8 @@ export class ConfirmTokenController implements HttpController {
   constructor(private readonly confirmToken: ConfirmToken) {}
 
   async handle(request: HttpRequest): Promise<HttpResponse> {
-    const body = this.serializer.parse(request.body)
-    const response = await this.confirmToken.execute({ token: body.token })
+    const { token } = this.serializer.parse(request.query)
+    const response = await this.confirmToken.execute({ token })
 
     if (response.isRight()) {
       const cookies = this.serializeCookies(response.value.session)

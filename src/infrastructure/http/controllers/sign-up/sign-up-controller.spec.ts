@@ -15,6 +15,8 @@ describe('SignUpController', () => {
       name: 'Daniel',
       email: 'daniel@example.com',
     },
+    headers: {},
+    query: {},
   } satisfies HttpRequest
 
   beforeEach(() => {
@@ -28,7 +30,7 @@ describe('SignUpController', () => {
     'throws if request body is invalid: %o',
     async (override) => {
       const body = Object.assign({}, httpRequest.body, override)
-      const promise = sut.handle({ body })
+      const promise = sut.handle({ ...httpRequest, body })
 
       await expect(promise).rejects.toThrow(ZodError)
     },
