@@ -2,6 +2,7 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 import { CreateSession } from './create-session'
 import type { SignToken, SignTokenParams } from '../cryptography/sign-token'
+import { Token } from '../entities/value-objects/token'
 import { TokenSecret } from '../protocols/token'
 
 describe('CreateSession', () => {
@@ -11,7 +12,10 @@ describe('CreateSession', () => {
   beforeEach(() => {
     signToken = {
       sign: vi.fn().mockImplementation((params: SignTokenParams) => {
-        return `any-${params.secret}`
+        const expiresAt = new Date()
+        expiresAt.setHours(expiresAt.getHours() + 1)
+
+        return new Token({ value: `any-${params.secret}`, expiresAt })
       }),
     }
     sut = new CreateSession(signToken)

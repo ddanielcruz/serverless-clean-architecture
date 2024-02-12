@@ -9,8 +9,13 @@ import type {
   VerifyToken,
   VerifyTokenParams,
 } from '@/domain/security/cryptography/verify-token'
+import { Token } from '@/domain/security/entities/value-objects/token'
 import type { TokenPayload } from '@/domain/security/protocols/token'
 import { TokenSecret } from '@/domain/security/protocols/token'
+
+type SignedPayload = TokenPayload & {
+  exp: number
+}
 
 export class JsonWebTokenAdapter implements SignToken, VerifyToken {
   private readonly secrets: Record<TokenSecret, string>
@@ -27,9 +32,15 @@ export class JsonWebTokenAdapter implements SignToken, VerifyToken {
     }
   }
 
-  async sign({ payload, secret }: SignTokenParams): Promise<string> {
+  async sign({ payload, secret }: SignTokenParams): Promise<Token> {
     const expiresIn = this.expirations[secret]
-    return sign(payload, this.secrets[secret], { expiresIn })
+    const token = sign(payload, this.secrets[secret], { expiresIn })
+
+    // Get calculated expiration date
+    const decoded = verify(token, this.secrets[secret]) as SignedPayload
+    const expiresAt = new Date(decoded.exp * 1000)
+
+    return new Token({ value: token, expiresAt })
   }
 
   async verify({

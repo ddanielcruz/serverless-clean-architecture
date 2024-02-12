@@ -21,18 +21,30 @@ vi.mock('jsonwebtoken', async () => {
 describe('JsonWebTokenAdapter', () => {
   let sut: JsonWebTokenAdapter
 
+  beforeAll(() => {
+    process.env.ACCESS_TOKEN_EXPIRATION = '5m'
+  })
+
   beforeEach(() => {
     sut = new JsonWebTokenAdapter()
   })
 
   describe('signToken', () => {
+    beforeEach(() => {
+      vi.useFakeTimers()
+    })
+
+    afterEach(() => {
+      vi.useRealTimers()
+    })
+
     it.each([TokenSecret.AccessToken, TokenSecret.RefreshToken])(
       'signs a valid token: %s',
       async (secret) => {
         const payload = { sub: 'any-id' }
         const token = await sut.sign({ payload, secret })
         const { secret: secretValue } = getParameters(secret)
-        const decoded = jwt.verify(token, secretValue) as { sub: string }
+        const decoded = jwt.verify(token.value, secretValue) as { sub: string }
 
         expect(token).toBeDefined()
         expect(decoded).toMatchObject(payload)
@@ -47,6 +59,14 @@ describe('JsonWebTokenAdapter', () => {
       expect(signSpy).toHaveBeenCalledWith(payload, secret, {
         expiresIn: expiration,
       })
+    })
+
+    it('returns the correct expiration date', async () => {
+      const now = new Date(2024, 0, 1)
+      vi.setSystemTime(now)
+      const payload = { sub: 'any-id' }
+      const token = await sut.sign({ payload, secret: TokenSecret.AccessToken })
+      expect(token.expiresAt).toEqual(new Date(now.getTime() + 5 * 60 * 1000))
     })
   })
 

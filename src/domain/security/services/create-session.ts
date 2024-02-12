@@ -25,8 +25,8 @@ export class CreateSession {
 
     return right({
       session: {
-        accessToken,
-        refreshToken,
+        accessToken: accessToken.value,
+        refreshToken: refreshToken.value,
       },
     })
   }

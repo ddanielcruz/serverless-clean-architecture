@@ -1,3 +1,4 @@
+import type { Token } from '../entities/value-objects/token'
 import type { TokenSecret, TokenPayload } from '../protocols/token'
 
 export interface SignTokenParams {
@@ -6,5 +7,5 @@ export interface SignTokenParams {
 }
 
 export interface SignToken {
-  sign(params: SignTokenParams): Promise<string>
+  sign(params: SignTokenParams): Promise<Token>
 }
