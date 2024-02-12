@@ -16,6 +16,7 @@ export type ConfirmTokenResponse = Either<
   { session: Session }
 >
 
+// TODO Persist session in a session repository with IP address and user agent information
 export class ConfirmToken {
   constructor(
     private readonly confirmationTokensRepository: ConfirmationTokensRepository,
