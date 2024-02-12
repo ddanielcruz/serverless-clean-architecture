@@ -1,5 +1,6 @@
 import { Entity } from '@/core/entities/entity'
 import type { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import type { Optional } from '@/core/types/optional'
 
 import type { IpAddress } from './ip-address'
 import type { Token } from './value-objects/token'
@@ -36,5 +37,18 @@ export class Session extends Entity<SessionProps> {
 
   get createdAt(): Date {
     return this._props.createdAt
+  }
+
+  constructor(
+    props: Optional<SessionProps, 'createdAt'>,
+    id?: UniqueEntityId | string,
+  ) {
+    super(
+      {
+        createdAt: new Date(),
+        ...props,
+      },
+      id,
+    )
   }
 }
