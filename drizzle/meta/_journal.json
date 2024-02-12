@@ -15,6 +15,13 @@
       "when": 1706490138579,
       "tag": "0001_create_confirmation_tokens_table",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1707778936382,
+      "tag": "0002_create_sessions_ip_addresses_tables",
+      "breakpoints": true
     }
   ]
 }
