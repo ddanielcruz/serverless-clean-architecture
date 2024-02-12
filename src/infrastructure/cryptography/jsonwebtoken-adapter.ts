@@ -9,8 +9,8 @@ import type {
   VerifyToken,
   VerifyTokenParams,
 } from '@/domain/security/cryptography/verify-token'
-import type { TokenPayload } from '@/domain/security/entities/token-payload'
-import { TokenSecret } from '@/domain/security/entities/token-secret'
+import type { TokenPayload } from '@/domain/security/protocols/token'
+import { TokenSecret } from '@/domain/security/protocols/token'
 
 export class JsonWebTokenAdapter implements SignToken, VerifyToken {
   private readonly secrets: Record<TokenSecret, string>

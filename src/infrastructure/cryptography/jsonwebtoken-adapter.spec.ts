@@ -1,8 +1,8 @@
 import * as jwt from 'jsonwebtoken'
 
 import { config } from '@/core/config'
-import type { TokenPayload } from '@/domain/security/entities/token-payload'
-import { TokenSecret } from '@/domain/security/entities/token-secret'
+import type { TokenPayload } from '@/domain/security/protocols/token'
+import { TokenSecret } from '@/domain/security/protocols/token'
 
 import { JsonWebTokenAdapter } from './jsonwebtoken-adapter'
 

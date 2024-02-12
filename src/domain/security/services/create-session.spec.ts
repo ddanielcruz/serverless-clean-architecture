@@ -2,7 +2,7 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 import { CreateSession } from './create-session'
 import type { SignToken, SignTokenParams } from '../cryptography/sign-token'
-import { TokenSecret } from '../entities/token-secret'
+import { TokenSecret } from '../protocols/token'
 
 describe('CreateSession', () => {
   let sut: CreateSession

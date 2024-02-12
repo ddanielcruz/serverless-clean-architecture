@@ -1,5 +1,4 @@
-import type { TokenPayload } from '../entities/token-payload'
-import type { TokenSecret } from '../entities/token-secret'
+import type { TokenSecret, TokenPayload } from '../protocols/token'
 
 export interface VerifyTokenParams {
   token: string

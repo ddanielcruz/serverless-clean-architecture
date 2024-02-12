@@ -2,7 +2,7 @@ import { right, type Either } from '@/core/either'
 import type { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 import type { SignToken } from '../cryptography/sign-token'
-import { TokenSecret } from '../entities/token-secret'
+import { TokenSecret } from '../protocols/token'
 
 export type CreateSessionRequest = { userId: UniqueEntityId }
 
