@@ -2,6 +2,7 @@ import { right, type Either } from '@/core/either'
 import type { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 import type { SignToken } from '../cryptography/sign-token'
+import { TokenSecret } from '../entities/token-secret'
 
 export type CreateSessionRequest = { userId: UniqueEntityId }
 
@@ -18,8 +19,8 @@ export class CreateSession {
   async execute(request: CreateSessionRequest): Promise<CreateSessionResponse> {
     const payload = { sub: request.userId.toString() }
     const [accessToken, refreshToken] = await Promise.all([
-      this.signToken.sign({ payload, secret: 'access-token' }),
-      this.signToken.sign({ payload, secret: 'refresh-token' }),
+      this.signToken.sign({ payload, secret: TokenSecret.AccessToken }),
+      this.signToken.sign({ payload, secret: TokenSecret.RefreshToken }),
     ])
 
     return right({

@@ -4,21 +4,21 @@ import { config } from '@/core/config'
 import type {
   SignToken,
   SignTokenParams,
-  SignTokenSecret,
 } from '@/domain/security/cryptography/sign-token'
+import { TokenSecret } from '@/domain/security/entities/token-secret'
 
 export class JsonWebTokenAdapter implements SignToken {
-  private readonly secrets: Record<SignTokenSecret, string>
-  private readonly expirations: Record<SignTokenSecret, string>
+  private readonly secrets: Record<TokenSecret, string>
+  private readonly expirations: Record<TokenSecret, string>
 
   constructor() {
     this.secrets = {
-      'access-token': config.get('ACCESS_TOKEN_SECRET'),
-      'refresh-token': config.get('REFRESH_TOKEN_SECRET'),
+      [TokenSecret.AccessToken]: config.get('ACCESS_TOKEN_SECRET'),
+      [TokenSecret.RefreshToken]: config.get('REFRESH_TOKEN_SECRET'),
     }
     this.expirations = {
-      'access-token': config.get('ACCESS_TOKEN_EXPIRATION'),
-      'refresh-token': config.get('REFRESH_TOKEN_EXPIRATION'),
+      [TokenSecret.AccessToken]: config.get('ACCESS_TOKEN_EXPIRATION'),
+      [TokenSecret.RefreshToken]: config.get('REFRESH_TOKEN_EXPIRATION'),
     }
   }
 
