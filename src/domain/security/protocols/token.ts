@@ -5,4 +5,5 @@ export enum TokenSecret {
 
 export type TokenPayload = {
   sub: string
+  session: string
 }

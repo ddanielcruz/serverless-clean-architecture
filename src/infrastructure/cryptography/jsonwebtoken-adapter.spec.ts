@@ -20,6 +20,7 @@ vi.mock('jsonwebtoken', async () => {
 
 describe('JsonWebTokenAdapter', () => {
   let sut: JsonWebTokenAdapter
+  const tokenPayload: TokenPayload = { sub: 'any-id', session: 'any-session' }
 
   beforeAll(() => {
     process.env.ACCESS_TOKEN_EXPIRATION = '5m'
@@ -41,22 +42,20 @@ describe('JsonWebTokenAdapter', () => {
     it.each([TokenSecret.AccessToken, TokenSecret.RefreshToken])(
       'signs a valid token: %s',
       async (secret) => {
-        const payload = { sub: 'any-id' }
-        const token = await sut.sign({ payload, secret })
+        const token = await sut.sign({ payload: tokenPayload, secret })
         const { secret: secretValue } = getParameters(secret)
         const decoded = jwt.verify(token.value, secretValue) as { sub: string }
 
         expect(token).toBeDefined()
-        expect(decoded).toMatchObject(payload)
+        expect(decoded).toMatchObject(tokenPayload)
       },
     )
 
     it('calls sign with correct parameters', async () => {
       const signSpy = vi.spyOn(jwt, 'sign')
-      const payload = { sub: 'any-id' }
       const { secret, expiration } = getParameters(TokenSecret.AccessToken)
-      await sut.sign({ payload, secret: TokenSecret.AccessToken })
-      expect(signSpy).toHaveBeenCalledWith(payload, secret, {
+      await sut.sign({ payload: tokenPayload, secret: TokenSecret.AccessToken })
+      expect(signSpy).toHaveBeenCalledWith(tokenPayload, secret, {
         expiresIn: expiration,
       })
     })
@@ -64,19 +63,20 @@ describe('JsonWebTokenAdapter', () => {
     it('returns the correct expiration date', async () => {
       const now = new Date(2024, 0, 1)
       vi.setSystemTime(now)
-      const payload = { sub: 'any-id' }
-      const token = await sut.sign({ payload, secret: TokenSecret.AccessToken })
+      const token = await sut.sign({
+        payload: tokenPayload,
+        secret: TokenSecret.AccessToken,
+      })
       expect(token.expiresAt).toEqual(new Date(now.getTime() + 5 * 60 * 1000))
     })
   })
 
   describe('verify', () => {
-    const payload: TokenPayload = { sub: 'any-sub' }
     let validToken: string
 
     beforeAll(() => {
       const { secret, expiration } = getParameters(TokenSecret.AccessToken)
-      validToken = jwt.sign(payload, secret, { expiresIn: expiration })
+      validToken = jwt.sign(tokenPayload, secret, { expiresIn: expiration })
     })
 
     it('returns null on invalid token', async () => {
@@ -97,7 +97,7 @@ describe('JsonWebTokenAdapter', () => {
 
     it('returns null on expired token', async () => {
       const { secret } = getParameters(TokenSecret.AccessToken)
-      const expiredToken = jwt.sign(payload, secret, { expiresIn: '0s' })
+      const expiredToken = jwt.sign(tokenPayload, secret, { expiresIn: '0s' })
       const result = await sut.verify({
         token: expiredToken,
         secret: TokenSecret.AccessToken,
@@ -111,7 +111,7 @@ describe('JsonWebTokenAdapter', () => {
         secret: TokenSecret.AccessToken,
       })
 
-      expect(result).toMatchObject(payload)
+      expect(result).toMatchObject(tokenPayload)
     })
   })
 })

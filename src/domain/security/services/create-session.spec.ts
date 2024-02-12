@@ -15,6 +15,7 @@ const geolocation = {
   longitude: 1000,
 }
 
+// TODO Add tests for IP location and extra logic
 describe('CreateSession', () => {
   let sut: CreateSession
   let signToken: SignToken
@@ -55,7 +56,7 @@ describe('CreateSession', () => {
     const response = await sut.execute(request)
     const { userId } = request
 
-    expect(response.isRight()).toEqual(true)
+    assert(response.isRight())
     expect(response.value).toMatchObject({
       session: {
         userId,
@@ -76,11 +77,17 @@ describe('CreateSession', () => {
       },
     })
     expect(signSpy).toHaveBeenCalledWith({
-      payload: { sub: userId.toString() },
+      payload: {
+        sub: userId.toString(),
+        session: response.value.session.id.toString(),
+      },
       secret: TokenSecret.AccessToken,
     })
     expect(signSpy).toHaveBeenCalledWith({
-      payload: { sub: userId.toString() },
+      payload: {
+        sub: userId.toString(),
+        session: response.value.session.id.toString(),
+      },
       secret: TokenSecret.RefreshToken,
     })
   })

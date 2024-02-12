@@ -1,5 +1,5 @@
 import { right, type Either, left } from '@/core/either'
-import type { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import type { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 
 import type { LocateIpAddress } from './locate-ip-address'
@@ -38,20 +38,27 @@ export class CreateSession {
     }
 
     // Sign tokens
-    const payload: TokenPayload = { sub: request.userId.toString() }
+    const sessionId = new UniqueEntityId()
+    const payload: TokenPayload = {
+      sub: request.userId.toString(),
+      session: sessionId.toString(),
+    }
     const [accessToken, refreshToken] = await Promise.all([
       this.signToken.sign({ payload, secret: TokenSecret.AccessToken }),
       this.signToken.sign({ payload, secret: TokenSecret.RefreshToken }),
     ])
 
     // Create a new session
-    const session = new Session({
-      userId: request.userId,
-      ipAddress: ipAddressResponse.value,
-      userAgent: request.userAgent,
-      accessToken,
-      refreshToken,
-    })
+    const session = new Session(
+      {
+        userId: request.userId,
+        ipAddress: ipAddressResponse.value,
+        userAgent: request.userAgent,
+        accessToken,
+        refreshToken,
+      },
+      sessionId,
+    )
 
     await this.sessionsRepository.create(session)
 
