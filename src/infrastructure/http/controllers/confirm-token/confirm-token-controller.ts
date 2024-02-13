@@ -4,6 +4,7 @@ import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 import type { Session } from '@/domain/security/entities/session'
 import type { ConfirmToken } from '@/domain/security/services/confirm-token'
 import { TokenAlreadyUsedError } from '@/domain/security/services/errors/token-already-used-error'
+import { UnidentifiedSessionError } from '@/domain/security/services/errors/unidentified-session-error'
 
 import { sessionCookieOptions } from '../../config/cookie'
 import type {
@@ -42,6 +43,10 @@ export class ConfirmTokenController implements HttpController {
     const error = response.value
     if (error instanceof ResourceNotFoundError) {
       return notFound({ body: { message: error.message } })
+    }
+
+    if (error instanceof UnidentifiedSessionError) {
+      return badRequest({ body: { message: error.message } })
     }
 
     if (error instanceof TokenAlreadyUsedError) {

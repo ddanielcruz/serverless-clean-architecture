@@ -5,6 +5,7 @@ import type { VerifyUserEmail } from '@/domain/users/services/verify-user-email'
 import type { CreateSession } from './create-session'
 import { TokenAlreadyUsedError } from './errors/token-already-used-error'
 import { TokenExpiredError } from './errors/token-expired-error'
+import { UnidentifiedSessionError } from './errors/unidentified-session-error'
 import type { ConfirmationTokensRepository } from '../../users/repositories/confirmation-tokens-repository'
 import type { Session } from '../entities/session'
 
@@ -15,7 +16,10 @@ export type ConfirmTokenRequest = {
 }
 
 export type ConfirmTokenResponse = Either<
-  ResourceNotFoundError | TokenAlreadyUsedError | TokenExpiredError,
+  | ResourceNotFoundError
+  | TokenAlreadyUsedError
+  | TokenExpiredError
+  | UnidentifiedSessionError,
   { session: Session }
 >
 
@@ -63,7 +67,7 @@ export class ConfirmToken {
     })
 
     if (sessionResponse.isLeft()) {
-      return left(sessionResponse.value)
+      return left(new UnidentifiedSessionError())
     }
 
     // Use token and save it

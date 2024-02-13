@@ -10,6 +10,7 @@ import { ConfirmToken } from './confirm-token'
 import type { CreateSession } from './create-session'
 import { TokenAlreadyUsedError } from './errors/token-already-used-error'
 import { TokenExpiredError } from './errors/token-expired-error'
+import { UnidentifiedSessionError } from './errors/unidentified-session-error'
 import {
   ConfirmationTokenType,
   type ConfirmationToken,
@@ -98,7 +99,7 @@ describe('ConfirmToken', () => {
     })
   })
 
-  it('returns ResourceNotFound if confirmation token user is not found', async () => {
+  it('returns ResourceNotFoundError if confirmation token user is not found', async () => {
     vi.spyOn(verifyUserEmail, 'execute').mockResolvedValue(
       left(new ResourceNotFoundError()),
     )
@@ -126,6 +127,15 @@ describe('ConfirmToken', () => {
     await sut.execute(request)
     expect(confirmationToken.isUsed).toBe(true)
     expect(saveSpy).toHaveBeenCalledWith(confirmationToken)
+  })
+
+  it('returns an UnidentifiedSessionError if session creations returns a ResourceNotFoundError', async () => {
+    vi.spyOn(createSession, 'execute').mockResolvedValue(
+      left(new ResourceNotFoundError()),
+    )
+    const response = await sut.execute(request)
+    expect(response.isLeft()).toBe(true)
+    expect(response.value).toBeInstanceOf(UnidentifiedSessionError)
   })
 
   it('returns a new session on success', async () => {

@@ -6,6 +6,7 @@ import type { Session } from '@/domain/security/entities/session'
 import type { ConfirmToken } from '@/domain/security/services/confirm-token'
 import { TokenAlreadyUsedError } from '@/domain/security/services/errors/token-already-used-error'
 import { TokenExpiredError } from '@/domain/security/services/errors/token-expired-error'
+import { UnidentifiedSessionError } from '@/domain/security/services/errors/unidentified-session-error'
 import { makeSession } from '@/test/factories/session-factory'
 
 import { ConfirmTokenController } from './confirm-token-controller'
@@ -59,6 +60,16 @@ describe('ConfirmTokenController', () => {
 
   it('returns 400 on token expired', async () => {
     const error = new TokenExpiredError()
+    vi.spyOn(confirmToken, 'execute').mockResolvedValueOnce(left(error))
+    const response = await sut.handle(httpRequest)
+    expect(response).toEqual({
+      statusCode: HttpCode.BAD_REQUEST,
+      body: { message: error.message },
+    })
+  })
+
+  it('returns 400 on unidentified session error', async () => {
+    const error = new UnidentifiedSessionError()
     vi.spyOn(confirmToken, 'execute').mockResolvedValueOnce(left(error))
     const response = await sut.handle(httpRequest)
     expect(response).toEqual({
