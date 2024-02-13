@@ -45,6 +45,6 @@ export class LocateIpAddress {
   }
 
   private composeRequestUrl(address: string): string {
-    return `https://ip-api.com/json/${address}`
+    return `http://ip-api.com/json/${address}`
   }
 }
