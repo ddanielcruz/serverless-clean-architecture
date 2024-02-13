@@ -2,20 +2,18 @@ import { ZodError } from 'zod'
 
 import { left, right } from '@/core/either'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
+import type { Session } from '@/domain/security/entities/session'
 import type { ConfirmToken } from '@/domain/security/services/confirm-token'
-import type { Session } from '@/domain/security/services/create-session'
 import { TokenAlreadyUsedError } from '@/domain/security/services/errors/token-already-used-error'
 import { TokenExpiredError } from '@/domain/security/services/errors/token-expired-error'
+import { makeSession } from '@/test/factories/session-factory'
 
 import { ConfirmTokenController } from './confirm-token-controller'
 import { sessionCookieOptions } from '../../config/cookie'
 import { HttpCode, type HttpRequest } from '../../protocols/http-controller'
 import { serializeCookie } from '../../utils/cookie'
 
-const session: Session = {
-  accessToken: 'any-access-token',
-  refreshToken: 'any-refresh-token',
-}
+const session: Session = makeSession()
 
 describe('ConfirmTokenController', () => {
   let sut: ConfirmTokenController
@@ -23,7 +21,8 @@ describe('ConfirmTokenController', () => {
   const httpRequest = {
     body: null,
     query: { token: 'any-token' },
-    headers: {},
+    headers: { 'user-agent': 'any-agent' },
+    ipAddress: '127.0.0.1',
   } satisfies HttpRequest
 
   beforeEach(() => {
@@ -85,15 +84,35 @@ describe('ConfirmTokenController', () => {
       [
         serializeCookie(
           'accessToken',
-          session.accessToken,
+          session.accessToken.value,
           sessionCookieOptions,
         ),
         serializeCookie(
           'refreshToken',
-          session.refreshToken,
+          session.refreshToken.value,
           sessionCookieOptions,
         ),
       ].join(', '),
     )
+  })
+
+  it('invokes use case with correct parameters', async () => {
+    const executeSpy = vi.spyOn(confirmToken, 'execute')
+    await sut.handle(httpRequest)
+    expect(executeSpy).toHaveBeenCalledWith({
+      token: httpRequest.query.token,
+      ipAddress: httpRequest.ipAddress,
+      userAgent: httpRequest.headers['user-agent'],
+    })
+  })
+
+  it('sets user agent to unknown if not defined', async () => {
+    const executeSpy = vi.spyOn(confirmToken, 'execute')
+    await sut.handle({ ...httpRequest, headers: {} })
+    expect(executeSpy).toHaveBeenCalledWith({
+      token: httpRequest.query.token,
+      ipAddress: httpRequest.ipAddress,
+      userAgent: 'unknown',
+    })
   })
 })

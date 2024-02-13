@@ -4,6 +4,7 @@ export interface HttpRequest {
   body: unknown
   headers: Record<string, string>
   query: Record<string, string>
+  ipAddress: string
 }
 
 export interface HttpResponse {

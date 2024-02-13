@@ -15,6 +15,7 @@ export function apiGatewayHttpAdapter(
       query: event.queryStringParameters
         ? sanitizeMapProperty(event.queryStringParameters)
         : {},
+      ipAddress: event.requestContext.identity.sourceIp,
     }
 
     const response = await controller.handle(request)
@@ -33,7 +34,7 @@ function sanitizeMapProperty(
   return Object.entries(raw).reduce<Record<string, string>>(
     (acc, [key, value]) => {
       if (value) {
-        acc[key] = value
+        acc[key.toLowerCase()] = value
       }
 
       return acc

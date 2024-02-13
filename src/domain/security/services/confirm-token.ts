@@ -2,13 +2,16 @@ import { right, left, type Either } from '@/core/either'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 import type { VerifyUserEmail } from '@/domain/users/services/verify-user-email'
 
-import type { CreateSession, Session } from './create-session'
+import type { CreateSession } from './create-session'
 import { TokenAlreadyUsedError } from './errors/token-already-used-error'
 import { TokenExpiredError } from './errors/token-expired-error'
 import type { ConfirmationTokensRepository } from '../../users/repositories/confirmation-tokens-repository'
+import type { Session } from '../entities/session'
 
 export type ConfirmTokenRequest = {
   token: string
+  ipAddress: string
+  userAgent: string
 }
 
 export type ConfirmTokenResponse = Either<
@@ -16,7 +19,6 @@ export type ConfirmTokenResponse = Either<
   { session: Session }
 >
 
-// TODO Persist session in a session repository with IP address and user agent information
 export class ConfirmToken {
   constructor(
     private readonly confirmationTokensRepository: ConfirmationTokensRepository,
@@ -56,7 +58,13 @@ export class ConfirmToken {
     // Create a new session
     const sessionResponse = await this.createSession.execute({
       userId: token.userId,
+      ipAddress: request.ipAddress,
+      userAgent: request.userAgent,
     })
+
+    if (sessionResponse.isLeft()) {
+      return left(sessionResponse.value)
+    }
 
     // Use token and save it
     token.use()

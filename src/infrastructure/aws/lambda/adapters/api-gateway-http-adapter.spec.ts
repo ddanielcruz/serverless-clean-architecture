@@ -18,8 +18,13 @@ describe('apiGatewayHttpAdapter', () => {
   let controllerStub: HttpController
   const apiEvent = {
     body: { name: 'any-name' },
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'content-type': 'application/json' },
     queryStringParameters: { 'any-query': 'any-value' },
+    requestContext: {
+      identity: {
+        sourceIp: '127.0.0.1',
+      },
+    },
   } as unknown as APIGatewayProxyEvent
 
   beforeEach(() => {
@@ -34,6 +39,7 @@ describe('apiGatewayHttpAdapter', () => {
       body: apiEvent.body,
       headers: apiEvent.headers,
       query: apiEvent.queryStringParameters,
+      ipAddress: apiEvent.requestContext.identity.sourceIp,
     })
   })
 
@@ -49,10 +55,11 @@ describe('apiGatewayHttpAdapter', () => {
       body: apiEvent.body,
       headers: apiEvent.headers,
       query: {},
+      ipAddress: apiEvent.requestContext.identity.sourceIp,
     })
   })
 
-  it('sanitizes undefined values on map properties', async () => {
+  it('removes falsy headers and normalize header keys', async () => {
     const handleSpy = vi.spyOn(controllerStub, 'handle')
     const handler = apiGatewayHttpAdapter(controllerStub)
     await handler(
@@ -61,6 +68,7 @@ describe('apiGatewayHttpAdapter', () => {
         headers: {
           ...apiEvent.headers,
           'X-Undefined-Header': undefined,
+          'X-Uppercase-Header': 'true',
         },
         queryStringParameters: {
           ...apiEvent.queryStringParameters,
@@ -72,8 +80,12 @@ describe('apiGatewayHttpAdapter', () => {
     )
     expect(handleSpy).toHaveBeenCalledWith({
       body: apiEvent.body,
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'content-type': 'application/json',
+        'x-uppercase-header': 'true',
+      },
       query: apiEvent.queryStringParameters,
+      ipAddress: apiEvent.requestContext.identity.sourceIp,
     })
   })
 

@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
+import type { Session } from '@/domain/security/entities/session'
 import type { ConfirmToken } from '@/domain/security/services/confirm-token'
-import type { Session } from '@/domain/security/services/create-session'
 import { TokenAlreadyUsedError } from '@/domain/security/services/errors/token-already-used-error'
 
 import { sessionCookieOptions } from '../../config/cookie'
@@ -28,7 +28,11 @@ export class ConfirmTokenController implements HttpController {
 
   async handle(request: HttpRequest): Promise<HttpResponse> {
     const { token } = this.serializer.parse(request.query)
-    const response = await this.confirmToken.execute({ token })
+    const response = await this.confirmToken.execute({
+      token,
+      ipAddress: request.ipAddress,
+      userAgent: request.headers['user-agent'] || 'unknown',
+    })
 
     if (response.isRight()) {
       const cookies = this.serializeCookies(response.value.session)
@@ -50,13 +54,13 @@ export class ConfirmTokenController implements HttpController {
   private serializeCookies({ accessToken, refreshToken }: Session) {
     const serializedAccessToken = serializeCookie(
       'accessToken',
-      accessToken,
+      accessToken.value,
       sessionCookieOptions,
     )
 
     const serializedRefreshToken = serializeCookie(
       'refreshToken',
-      refreshToken,
+      refreshToken.value,
       sessionCookieOptions,
     )
 

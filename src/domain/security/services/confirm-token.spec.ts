@@ -49,7 +49,11 @@ describe('ConfirmToken', () => {
     user = makeUser()
     confirmationToken = makeConfirmationToken({ userId: user.id })
     confirmationTokensRepository.items.push(confirmationToken)
-    request = { token: confirmationToken.token }
+    request = {
+      token: confirmationToken.token,
+      ipAddress: 'any-ip-address',
+      userAgent: 'any-user-agent',
+    }
   })
 
   it('finds confirmation token by token value', async () => {
@@ -78,7 +82,10 @@ describe('ConfirmToken', () => {
       expiresAt: new Date(2000),
     })
     confirmationTokensRepository.items.push(confirmationToken)
-    const response = await sut.execute({ token: confirmationToken.token })
+    const response = await sut.execute({
+      ...request,
+      token: confirmationToken.token,
+    })
     expect(response.isLeft()).toBe(true)
     expect(response.value).toBeInstanceOf(TokenExpiredError)
   })
@@ -107,7 +114,10 @@ describe('ConfirmToken', () => {
       type: ConfirmationTokenType.Authentication,
     })
     confirmationTokensRepository.items.push(confirmationToken)
-    await sut.execute({ token: confirmationToken.token })
+    await sut.execute({
+      ...request,
+      token: confirmationToken.token,
+    })
     expect(executeSpy).not.toHaveBeenCalled()
   })
 
@@ -124,6 +134,8 @@ describe('ConfirmToken', () => {
     expect(response.isRight()).toBe(true)
     expect(executeSpy).toHaveBeenCalledWith({
       userId: confirmationToken.userId,
+      ipAddress: request.ipAddress,
+      userAgent: request.userAgent,
     })
     expect(response.value).toMatchObject({
       session: {
