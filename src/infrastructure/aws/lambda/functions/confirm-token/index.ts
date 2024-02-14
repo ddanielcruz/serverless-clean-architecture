@@ -1,6 +1,8 @@
 import { handlerPath } from '@/infrastructure/aws/lambda/utils/handler-resolver'
 
-export default {
+import { defineFunction } from '../../utils/define-function'
+
+export default defineFunction({
   handler: `${handlerPath(__dirname)}/handler.main`,
   environment: {
     ACCESS_TOKEN_SECRET: '${env:ACCESS_TOKEN_SECRET}',
@@ -17,4 +19,4 @@ export default {
       },
     },
   ],
-}
+})

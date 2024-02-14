@@ -1,6 +1,8 @@
 import { handlerPath } from '@/infrastructure/aws/lambda/utils/handler-resolver'
 
-export default {
+import { defineFunction } from '../../utils/define-function'
+
+export default defineFunction({
   handler: `${handlerPath(__dirname)}/handler.main`,
   environment: {
     EMAIL_SENDER: '${env:EMAIL_SENDER}',
@@ -14,4 +16,4 @@ export default {
       },
     },
   ],
-}
+})
