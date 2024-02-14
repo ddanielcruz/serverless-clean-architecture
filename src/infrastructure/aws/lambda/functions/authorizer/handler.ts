@@ -29,10 +29,16 @@ export const main: APIGatewayTokenAuthorizerHandler = async (event) => {
   return generatePolicy(payload.sub, 'Allow', event.methodArn)
 }
 
-// TODO Handle multiple values in the cookie
-function extractAccessTokenFromCookie(cookie: string) {
-  // Shouldn't we parse the cookie? We can receive more than one value here. In fact, it'll also have a refresh token
-  return cookie.split('=')[1]
+function extractAccessTokenFromCookie(cookieList: string) {
+  const accessToken = cookieList.split(';').find((cookie) => {
+    return cookie.trim().startsWith('accessToken')
+  })
+
+  if (!accessToken) {
+    return null
+  }
+
+  return accessToken.split('=')[1]
 }
 
 function generatePolicy(principalId: string, effect: string, resource: string) {
