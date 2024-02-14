@@ -28,8 +28,6 @@ export class ConfirmTokenController implements HttpController {
   constructor(private readonly confirmToken: ConfirmToken) {}
 
   async handle(request: HttpRequest): Promise<HttpResponse> {
-    console.log(request.headers)
-
     const { token } = this.serializer.parse(request.query)
     const response = await this.confirmToken.execute({
       token,
@@ -39,7 +37,7 @@ export class ConfirmTokenController implements HttpController {
 
     if (response.isRight()) {
       const cookies = this.serializeCookies(response.value.session)
-      return noContent({ headers: { 'Set-Cookie': cookies.join(', ') } })
+      return noContent({ headers: { 'Set-Cookie': cookies } })
     }
 
     const error = response.value

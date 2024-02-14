@@ -95,6 +95,7 @@ describe('apiGatewayHttpAdapter', () => {
     expect(response).toEqual({
       statusCode: 200,
       body: JSON.stringify(apiEvent.body),
+      multiValueHeaders: {},
     })
   })
 
@@ -107,6 +108,27 @@ describe('apiGatewayHttpAdapter', () => {
     expect(response).toEqual({
       statusCode: 204,
       body: '',
+      multiValueHeaders: {},
+    })
+  })
+
+  it('normalizes response headers to multiValueHeaders format', async () => {
+    vi.spyOn(controllerStub, 'handle').mockResolvedValueOnce({
+      statusCode: 204,
+      headers: {
+        'set-cookie': ['cookie1', 'cookie2'],
+        'x-custom-header': 'custom-header',
+      },
+    })
+
+    const handler = apiGatewayHttpAdapter(controllerStub)
+    const response = await handler(apiEvent, null as never, null as never)
+
+    expect(response).toMatchObject({
+      multiValueHeaders: {
+        'set-cookie': ['cookie1', 'cookie2'],
+        'x-custom-header': ['custom-header'],
+      },
     })
   })
 

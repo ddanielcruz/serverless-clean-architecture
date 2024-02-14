@@ -10,7 +10,7 @@ export interface HttpRequest {
 export interface HttpResponse {
   statusCode: HttpCode
   body?: unknown
-  headers?: Record<string, string>
+  headers?: Record<string, string | string[]>
 }
 
 export abstract class HttpController {

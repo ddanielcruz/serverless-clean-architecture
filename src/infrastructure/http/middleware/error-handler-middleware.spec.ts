@@ -45,6 +45,13 @@ describe('ErrorHandlerMiddleware', () => {
   let controllerStub: StubHttpController
   let loggerStub: Logger
 
+  const httpRequest: HttpRequest = {
+    body: { name: 'any-name' },
+    headers: {},
+    query: {},
+    ipAddress: 'any-ip',
+  }
+
   beforeEach(() => {
     controllerStub = new StubHttpController()
     loggerStub = new LoggerStub()
@@ -52,7 +59,7 @@ describe('ErrorHandlerMiddleware', () => {
   })
 
   it('returns 400 on Zod errors', async () => {
-    const response = await sut.handle({})
+    const response = await sut.handle({ ...httpRequest, body: {} })
     expect(response.statusCode).toBe(400)
     expect(response.body).toMatchObject({
       message: expect.any(String),
@@ -66,7 +73,7 @@ describe('ErrorHandlerMiddleware', () => {
       .mockImplementationOnce(() => {})
     const error = new Error('unknown-error')
     vi.spyOn(controllerStub, 'handle').mockRejectedValueOnce(error)
-    const response = await sut.handle({ body: { name: 'any-name' } })
+    const response = await sut.handle(httpRequest)
     expect(response.statusCode).toBe(500)
     expect(response.body).toMatchObject({ message: expect.any(String) })
     expect(response.body).not.toMatchObject({ message: error.message })
@@ -74,7 +81,7 @@ describe('ErrorHandlerMiddleware', () => {
   })
 
   it('returns controller response on success', async () => {
-    const response = await sut.handle({ body: { name: 'any-name' } })
+    const response = await sut.handle(httpRequest)
     expect(response.statusCode).toBe(200)
     expect(response.body).toMatchObject({ name: 'any-name' })
   })

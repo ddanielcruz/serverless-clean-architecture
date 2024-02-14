@@ -83,7 +83,7 @@ describe('ConfirmTokenController', () => {
     expect(response).toEqual({
       statusCode: HttpCode.NO_CONTENT,
       headers: {
-        'Set-Cookie': expect.any(String),
+        'Set-Cookie': [expect.any(String), expect.any(String)],
       },
     })
   })
@@ -91,20 +91,18 @@ describe('ConfirmTokenController', () => {
   it('returns the session tokens as a session cookie', async () => {
     const response = await sut.handle(httpRequest)
     const cookies = response.headers?.['Set-Cookie']
-    expect(cookies).toEqual(
-      [
-        serializeCookie(
-          'accessToken',
-          session.accessToken.value,
-          sessionCookieOptions,
-        ),
-        serializeCookie(
-          'refreshToken',
-          session.refreshToken.value,
-          sessionCookieOptions,
-        ),
-      ].join(', '),
-    )
+    expect(cookies).toEqual([
+      serializeCookie(
+        'accessToken',
+        session.accessToken.value,
+        sessionCookieOptions,
+      ),
+      serializeCookie(
+        'refreshToken',
+        session.refreshToken.value,
+        sessionCookieOptions,
+      ),
+    ])
   })
 
   it('invokes use case with correct parameters', async () => {

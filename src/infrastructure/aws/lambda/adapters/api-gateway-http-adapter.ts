@@ -23,7 +23,13 @@ export function apiGatewayHttpAdapter(
     return {
       statusCode: response.statusCode,
       body: response.body ? JSON.stringify(response.body) : '',
-      headers: response.headers,
+      multiValueHeaders: Object.entries(response.headers || {}).reduce(
+        (acc, [key, value]) => {
+          acc[key] = Array.isArray(value) ? value : [value]
+          return acc
+        },
+        {} as Record<string, string[]>,
+      ),
     }
   }
 }
