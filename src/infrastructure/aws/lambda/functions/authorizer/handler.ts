@@ -1,16 +1,23 @@
-import type { APIGatewayTokenAuthorizerHandler } from 'aws-lambda'
+import type {
+  APIGatewayAuthorizerResult,
+  APIGatewayTokenAuthorizerEvent,
+  Handler,
+} from 'aws-lambda'
 
 import type { VerifyToken } from '@/domain/security/cryptography/verify-token'
 import { TokenSecret } from '@/domain/security/protocols/token'
 import { JsonWebTokenAdapter } from '@/infrastructure/cryptography/jsonwebtoken-adapter'
 
-export const main: APIGatewayTokenAuthorizerHandler = async (event) => {
+export const main: Handler<
+  APIGatewayTokenAuthorizerEvent,
+  APIGatewayAuthorizerResult | 'Unauthorized'
+> = async (event) => {
   // Extract access token from cookie in event headers
   const cookie = event.authorizationToken
   const accessToken = extractAccessTokenFromCookie(cookie)
 
   if (!accessToken) {
-    throw new Error('Unauthorized')
+    return 'Unauthorized'
   }
 
   // Validate access token
@@ -22,7 +29,7 @@ export const main: APIGatewayTokenAuthorizerHandler = async (event) => {
 
   // Return unauthorized if access token is invalid (expired, invalid signature, etc.)
   if (!payload) {
-    throw new Error('Unauthorized')
+    return 'Unauthorized'
   }
 
   // Generate policy document on success
