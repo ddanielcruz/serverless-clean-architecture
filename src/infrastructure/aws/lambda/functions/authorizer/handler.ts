@@ -1,17 +1,18 @@
 import type {
   APIGatewayAuthorizerResult,
   APIGatewayTokenAuthorizerEvent,
-  Handler,
 } from 'aws-lambda'
 
 import type { VerifyToken } from '@/domain/security/cryptography/verify-token'
 import { TokenSecret } from '@/domain/security/protocols/token'
 import { JsonWebTokenAdapter } from '@/infrastructure/cryptography/jsonwebtoken-adapter'
 
-export const main: Handler<
-  APIGatewayTokenAuthorizerEvent,
-  APIGatewayAuthorizerResult | 'Unauthorized'
-> = async (event) => {
+// Custom handler because the official one is incorrect
+type Handler = (
+  event: APIGatewayTokenAuthorizerEvent,
+) => Promise<APIGatewayAuthorizerResult | 'Unauthorized'>
+
+export const main: Handler = async (event) => {
   // Extract access token from cookie in event headers
   const cookie = event.authorizationToken
   const accessToken = extractAccessTokenFromCookie(cookie)
