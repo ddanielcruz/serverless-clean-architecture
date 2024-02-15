@@ -1,11 +1,11 @@
 meta {
-  name: Sign Out
+  name: Delete session
   type: http
-  seq: 5
+  seq: 4
 }
 
 delete {
-  url: {{baseUrl}}/sign-out
+  url: {{baseUrl}}/sessions
   body: none
   auth: none
 }

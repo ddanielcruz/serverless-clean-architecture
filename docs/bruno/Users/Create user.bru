@@ -1,17 +1,18 @@
 meta {
-  name: Sign In
+  name: Create user
   type: http
-  seq: 3
+  seq: 1
 }
 
 post {
-  url: {{baseUrl}}/sign-in
+  url: {{baseUrl}}/users
   body: json
   auth: none
 }
 
 body:json {
   {
+    "name": "Daniel",
     "email": "daniel@example.com"
   }
 }

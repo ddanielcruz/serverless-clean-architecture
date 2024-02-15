@@ -12,7 +12,7 @@ export default defineFunction({
     {
       http: {
         method: 'delete',
-        path: '/sign-out',
+        path: '/sessions',
       },
     },
   ],

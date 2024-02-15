@@ -14,8 +14,8 @@ export default defineFunction({
   events: [
     {
       http: {
-        method: 'get',
-        path: '/confirm-token',
+        method: 'put',
+        path: '/sessions',
       },
     },
   ],

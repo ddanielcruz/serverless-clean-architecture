@@ -1,0 +1,21 @@
+meta {
+  name: Confirm session
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/sessions/confirm?token=53ec6fd71ca6f4e29ab68772908fffcb9cd4f5d056e21f8bfad73cf9cb782bf0
+  body: none
+  auth: none
+}
+
+query {
+  token: 53ec6fd71ca6f4e29ab68772908fffcb9cd4f5d056e21f8bfad73cf9cb782bf0
+}
+
+body:json {
+  {
+    "token": "b7913ddb88b9a4baf2d99c7ea9f54f5a3d06bd9fca2358bfeb74ccf471e6c232"
+  }
+}

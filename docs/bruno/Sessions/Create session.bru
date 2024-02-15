@@ -1,18 +1,17 @@
 meta {
-  name: Sign Up
+  name: Create session
   type: http
   seq: 2
 }
 
 post {
-  url: {{baseUrl}}/sign-up
+  url: {{baseUrl}}/sessions
   body: json
   auth: none
 }
 
 body:json {
   {
-    "name": "Daniel",
     "email": "daniel@example.com"
   }
 }

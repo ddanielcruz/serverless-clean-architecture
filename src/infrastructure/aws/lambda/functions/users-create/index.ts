@@ -12,7 +12,7 @@ export default defineFunction({
     {
       http: {
         method: 'post',
-        path: '/sign-in',
+        path: '/users',
       },
     },
   ],

@@ -14,8 +14,8 @@ export default defineFunction({
   events: [
     {
       http: {
-        method: 'put',
-        path: '/refresh-session',
+        method: 'get',
+        path: '/sessions/confirm',
       },
     },
   ],
