@@ -1,9 +1,6 @@
 import type { AWS } from '@serverless/typescript'
 
-type FunctionDefinition = Exclude<
-  Required<AWS['functions']>,
-  undefined
->[string] & {
+type FunctionDefinition = Exclude<AWS['functions'], undefined>[string] & {
   protected?: boolean
 }
 
