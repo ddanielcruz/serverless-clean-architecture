@@ -49,6 +49,7 @@ export const sessions = pgTable(
       .notNull()
       .references(() => ipAddresses.id),
     userAgent: text('user_agent').notNull(),
+    invalidatedAt: timestamp('invalidated_at'),
     createdAt: timestamp('created_at').notNull().defaultNow(),
   },
   (table) => {

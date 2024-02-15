@@ -1,0 +1,1 @@
+ALTER TABLE "sessions" ADD COLUMN "invalidated_at" timestamp;
