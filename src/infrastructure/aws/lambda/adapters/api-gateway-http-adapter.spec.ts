@@ -1,5 +1,6 @@
 import type { APIGatewayProxyEvent } from 'aws-lambda'
 
+import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import type {
   HttpController,
   HttpRequest,
@@ -40,6 +41,7 @@ describe('apiGatewayHttpAdapter', () => {
       headers: apiEvent.headers,
       query: apiEvent.queryStringParameters,
       ipAddress: apiEvent.requestContext.identity.sourceIp,
+      session: null,
     })
   })
 
@@ -56,6 +58,7 @@ describe('apiGatewayHttpAdapter', () => {
       headers: apiEvent.headers,
       query: {},
       ipAddress: apiEvent.requestContext.identity.sourceIp,
+      session: null,
     })
   })
 
@@ -86,6 +89,7 @@ describe('apiGatewayHttpAdapter', () => {
       },
       query: apiEvent.queryStringParameters,
       ipAddress: apiEvent.requestContext.identity.sourceIp,
+      session: null,
     })
   })
 
@@ -138,5 +142,32 @@ describe('apiGatewayHttpAdapter', () => {
     const handler = apiGatewayHttpAdapter(controllerStub)
     const promise = handler(apiEvent, null as never, null as never)
     await expect(promise).rejects.toThrow(error)
+  })
+
+  it('parses session from request context authorizer', async () => {
+    const handleSpy = vi.spyOn(controllerStub, 'handle')
+    const handler = apiGatewayHttpAdapter(controllerStub)
+    await handler(
+      {
+        ...apiEvent,
+        requestContext: {
+          ...apiEvent.requestContext,
+          authorizer: {
+            principalId: 'any-principal-id',
+            session: 'any-session-id',
+          },
+        },
+      },
+      null as never,
+      null as never,
+    )
+    expect(handleSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        session: {
+          sessionId: new UniqueEntityId('any-session-id'),
+          userId: new UniqueEntityId('any-principal-id'),
+        },
+      }),
+    )
   })
 })

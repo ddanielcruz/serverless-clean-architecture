@@ -57,6 +57,9 @@ describe('Authorizer', () => {
           },
         ],
       },
+      context: {
+        session: tokenPayload.session,
+      },
     })
   })
 })
