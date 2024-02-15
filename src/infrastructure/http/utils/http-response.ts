@@ -10,7 +10,6 @@ function makeHelper(statusCode: HttpCode) {
 export const ok = makeHelper(HttpCode.OK)
 export const created = makeHelper(HttpCode.CREATED)
 export const badRequest = makeHelper(HttpCode.BAD_REQUEST)
-export const unauthorized = makeHelper(HttpCode.UNAUTHORIZED)
 export const forbidden = makeHelper(HttpCode.FORBIDDEN)
 export const notFound = makeHelper(HttpCode.NOT_FOUND)
 export const conflict = makeHelper(HttpCode.CONFLICT)
@@ -22,5 +21,13 @@ export const noContent = (
   params?: Omit<HttpResponse, 'statusCode' | 'body'>,
 ): HttpResponse => ({
   statusCode: HttpCode.NO_CONTENT,
+  ...params,
+})
+
+export const unauthorized = (
+  params?: Omit<HttpResponse, 'body' | 'statusCode'>,
+): HttpResponse => ({
+  statusCode: HttpCode.UNAUTHORIZED,
+  body: { message: 'Unauthorized.' },
   ...params,
 })
