@@ -11,6 +11,7 @@ export interface SessionProps {
   refreshToken: Token
   userAgent: string
   ipAddress: IpAddress
+  invalidatedAt: Date | null
   createdAt: Date
 }
 
@@ -35,20 +36,31 @@ export class Session extends Entity<SessionProps> {
     return this._props.ipAddress
   }
 
+  get invalidatedAt(): Date | null {
+    return this._props.invalidatedAt
+  }
+
   get createdAt(): Date {
     return this._props.createdAt
   }
 
   constructor(
-    props: Optional<SessionProps, 'createdAt'>,
+    props: Optional<SessionProps, 'invalidatedAt' | 'createdAt'>,
     id?: UniqueEntityId | string,
   ) {
     super(
       {
+        invalidatedAt: null,
         createdAt: new Date(),
         ...props,
       },
       id,
     )
+  }
+
+  invalidate() {
+    if (!this._props.invalidatedAt) {
+      this._props.invalidatedAt = new Date()
+    }
   }
 }

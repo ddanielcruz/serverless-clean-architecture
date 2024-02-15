@@ -11,6 +11,7 @@ export class DrizzleSessionMapper {
       userId: session.userId.toString(),
       ipAddressId: session.ipAddress.id.toString(),
       userAgent: session.userAgent,
+      invalidatedAt: session.invalidatedAt,
       createdAt: session.createdAt,
     }
   }
