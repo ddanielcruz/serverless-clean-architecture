@@ -24,6 +24,7 @@ describe('ConfirmTokenController', () => {
     query: { token: 'any-token' },
     headers: { 'user-agent': 'any-agent' },
     ipAddress: '127.0.0.1',
+    session: null,
   } satisfies HttpRequest
 
   beforeEach(() => {
