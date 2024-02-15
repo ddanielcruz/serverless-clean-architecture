@@ -34,7 +34,14 @@ export const main: Handler = async (event) => {
   }
 
   // Generate policy document on success
-  return generatePolicy(payload.sub, 'Allow', event.methodArn)
+  return generatePolicy({
+    principalId: payload.sub,
+    effect: 'Allow',
+    resource: event.methodArn,
+    context: {
+      session: payload.session,
+    },
+  })
 }
 
 function extractAccessTokenFromCookie(cookieList: string) {
@@ -49,7 +56,21 @@ function extractAccessTokenFromCookie(cookieList: string) {
   return accessToken.split('=')[1]
 }
 
-function generatePolicy(principalId: string, effect: string, resource: string) {
+interface GeneratePolicyParams {
+  principalId: string
+  effect: 'Allow' | 'Deny'
+  resource: string
+  context: {
+    session: string
+  }
+}
+
+function generatePolicy({
+  principalId,
+  effect,
+  resource,
+  context,
+}: GeneratePolicyParams) {
   return {
     principalId,
     policyDocument: {
@@ -62,5 +83,6 @@ function generatePolicy(principalId: string, effect: string, resource: string) {
         },
       ],
     },
+    context,
   }
 }
