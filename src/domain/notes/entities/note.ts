@@ -19,8 +19,6 @@ export interface NoteProps {
   createdAt: Date
 }
 
-type ConstructorProps = Optional<NoteProps, 'status' | 'summary' | 'createdAt'>
-
 export class Note extends Entity<NoteProps> {
   get userId(): UniqueEntityId {
     return this._props.userId
@@ -42,13 +40,19 @@ export class Note extends Entity<NoteProps> {
     return this._props.createdAt
   }
 
-  constructor(props: ConstructorProps) {
-    super({
-      status: NoteStatus.Created,
-      summary: null,
-      createdAt: new Date(),
-      ...props,
-    })
+  constructor(
+    props: Optional<NoteProps, 'status' | 'summary' | 'createdAt'>,
+    id?: UniqueEntityId | string,
+  ) {
+    super(
+      {
+        status: NoteStatus.Created,
+        summary: null,
+        createdAt: new Date(),
+        ...props,
+      },
+      id,
+    )
   }
 
   markAsProcessing(): void {

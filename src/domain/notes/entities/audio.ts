@@ -1,4 +1,5 @@
 import { Entity } from '@/core/entities/entity'
+import type { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import type { Optional } from '@/core/types/optional'
 
 export enum AudioFormat {
@@ -41,12 +42,15 @@ export class Audio extends Entity<AudioProps> {
     this._props.transcription = transcription
   }
 
-  constructor(props: ConstructorProps) {
-    super({
-      duration: null,
-      transcription: null,
-      ...props,
-    })
+  constructor(props: ConstructorProps, id?: UniqueEntityId | string) {
+    super(
+      {
+        duration: null,
+        transcription: null,
+        ...props,
+      },
+      id,
+    )
     this.validateFilenameFormat(props)
   }
 
