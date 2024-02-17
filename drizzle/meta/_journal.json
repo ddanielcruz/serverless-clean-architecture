@@ -36,6 +36,13 @@
       "when": 1708205212962,
       "tag": "0004_create_notes_audios_tables",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1708205434155,
+      "tag": "0005_set_audio_duration_column_nullable",
+      "breakpoints": true
     }
   ]
 }

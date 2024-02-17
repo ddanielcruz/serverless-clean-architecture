@@ -65,7 +65,7 @@ export const audios = pgTable('audios', {
   id: text('id').notNull().primaryKey(),
   format: text('format').$type<AudioFormat>().notNull(),
   filename: text('filename').notNull(),
-  duration: real('duration').notNull(),
+  duration: real('duration'),
 })
 
 export const notes = pgTable(
