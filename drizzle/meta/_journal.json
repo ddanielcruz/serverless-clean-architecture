@@ -29,6 +29,13 @@
       "when": 1708031375173,
       "tag": "0003_add_sessions_invalidated_at_column",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1708205212962,
+      "tag": "0004_create_notes_audios_tables",
+      "breakpoints": true
     }
   ]
 }

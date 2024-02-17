@@ -1,5 +1,7 @@
 import { index, pgTable, text, timestamp, real } from 'drizzle-orm/pg-core'
 
+import type { AudioFormat } from '@/domain/notes/entities/audio'
+import type { NoteStatus } from '@/domain/notes/entities/note'
 import type { ConfirmationTokenType } from '@/domain/users/entities/confirmation-token'
 
 export const users = pgTable('users', {
@@ -55,6 +57,36 @@ export const sessions = pgTable(
   (table) => {
     return {
       userIdIdx: index().on(table.userId),
+    }
+  },
+)
+
+export const audios = pgTable('audios', {
+  id: text('id').notNull().primaryKey(),
+  format: text('format').$type<AudioFormat>().notNull(),
+  filename: text('filename').notNull(),
+  duration: real('duration').notNull(),
+})
+
+export const notes = pgTable(
+  'notes',
+  {
+    id: text('id').notNull().primaryKey(),
+    userId: text('user_id')
+      .notNull()
+      .references(() => users.id),
+    audioId: text('audio_id')
+      .notNull()
+      .references(() => audios.id),
+    status: text('status').$type<NoteStatus>().notNull(),
+    summary: text('summary'),
+    transcription: text('transcription'),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+  },
+  (table) => {
+    return {
+      userIdIdx: index().on(table.userId),
+      audioIdIdx: index().on(table.audioId),
     }
   },
 )
