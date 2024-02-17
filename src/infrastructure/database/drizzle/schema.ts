@@ -66,6 +66,7 @@ export const audios = pgTable('audios', {
   format: text('format').$type<AudioFormat>().notNull(),
   filename: text('filename').notNull(),
   duration: real('duration'),
+  transcription: text('transcription'),
 })
 
 export const notes = pgTable(
@@ -80,7 +81,6 @@ export const notes = pgTable(
       .references(() => audios.id),
     status: text('status').$type<NoteStatus>().notNull(),
     summary: text('summary'),
-    transcription: text('transcription'),
     createdAt: timestamp('created_at').notNull().defaultNow(),
   },
   (table) => {

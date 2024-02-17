@@ -1,7 +1,7 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
-import { Note, NoteStatus } from './note'
 import { Audio, AudioFormat } from './audio'
+import { Note, NoteStatus } from './note'
 
 describe('Note', () => {
   const userId = new UniqueEntityId()
@@ -16,7 +16,7 @@ describe('Note', () => {
     expect(note.audio).toBe(audio)
     expect(note.status).toBe(NoteStatus.Created)
     expect(note.summary).toBeNull()
-    expect(note.transcription).toBeNull()
+    expect(note.audio.transcription).toBeNull()
     expect(note.createdAt).toBeInstanceOf(Date)
   })
 
@@ -31,7 +31,7 @@ describe('Note', () => {
     note.markAsDone('test summary', 'test transcription')
     expect(note.status).toBe(NoteStatus.Done)
     expect(note.summary).toBe('test summary')
-    expect(note.transcription).toBe('test transcription')
+    expect(note.audio.transcription).toBe('test transcription')
   })
 
   it('marks a note as failed', () => {

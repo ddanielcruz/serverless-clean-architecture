@@ -11,9 +11,10 @@ export interface AudioProps {
   format: AudioFormat
   filename: string
   duration: number | null
+  transcription: string | null
 }
 
-type ConstructorProps = Optional<AudioProps, 'duration'>
+type ConstructorProps = Optional<AudioProps, 'duration' | 'transcription'>
 
 export class Audio extends Entity<AudioProps> {
   get format(): AudioFormat {
@@ -32,9 +33,18 @@ export class Audio extends Entity<AudioProps> {
     this._props.duration = duration
   }
 
+  get transcription(): string | null {
+    return this._props.transcription
+  }
+
+  set transcription(transcription: string) {
+    this._props.transcription = transcription
+  }
+
   constructor(props: ConstructorProps) {
     super({
       duration: null,
+      transcription: null,
       ...props,
     })
     this.validateFilenameFormat(props)

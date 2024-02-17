@@ -16,21 +16,17 @@ export interface NoteProps {
   audio: Audio
   status: NoteStatus
   summary: string | null
-  transcription: string | null
   createdAt: Date
 }
 
-type ConstructorProps = Optional<
-  NoteProps,
-  'status' | 'summary' | 'transcription' | 'createdAt'
->
+type ConstructorProps = Optional<NoteProps, 'status' | 'summary' | 'createdAt'>
 
 export class Note extends Entity<NoteProps> {
   get userId(): UniqueEntityId {
     return this._props.userId
   }
 
-  get audio(): Audio {
+  get audio(): Readonly<Audio> {
     return this._props.audio
   }
 
@@ -42,10 +38,6 @@ export class Note extends Entity<NoteProps> {
     return this._props.summary
   }
 
-  get transcription(): string | null {
-    return this._props.transcription
-  }
-
   get createdAt(): Date {
     return this._props.createdAt
   }
@@ -54,7 +46,6 @@ export class Note extends Entity<NoteProps> {
     super({
       status: NoteStatus.Created,
       summary: null,
-      transcription: null,
       createdAt: new Date(),
       ...props,
     })
@@ -67,7 +58,7 @@ export class Note extends Entity<NoteProps> {
   markAsDone(summary: string, transcription: string): void {
     this._props.status = NoteStatus.Done
     this._props.summary = summary
-    this._props.transcription = transcription
+    this._props.audio.transcription = transcription
   }
 
   markAsFailed(): void {
