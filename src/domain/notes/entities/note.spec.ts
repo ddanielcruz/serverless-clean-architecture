@@ -1,7 +1,7 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 import { Note, NoteStatus } from './note'
-import { Audio, AudioFormat } from './value-objects/audio'
+import { Audio, AudioFormat } from './audio'
 
 describe('Note', () => {
   const userId = new UniqueEntityId()

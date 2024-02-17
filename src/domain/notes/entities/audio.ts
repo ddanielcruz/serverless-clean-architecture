@@ -1,3 +1,4 @@
+import { Entity } from '@/core/entities/entity'
 import type { Optional } from '@/core/types/optional'
 
 export enum AudioFormat {
@@ -14,9 +15,7 @@ export interface AudioProps {
 
 type ConstructorProps = Optional<AudioProps, 'duration'>
 
-export class Audio {
-  private readonly _props: AudioProps
-
+export class Audio extends Entity<AudioProps> {
   get format(): AudioFormat {
     return this._props.format
   }
@@ -34,12 +33,11 @@ export class Audio {
   }
 
   constructor(props: ConstructorProps) {
-    this.validateFilenameFormat(props)
-
-    this._props = {
+    super({
       duration: null,
       ...props,
-    }
+    })
+    this.validateFilenameFormat(props)
   }
 
   private validateFilenameFormat({ filename, format }: ConstructorProps): void {

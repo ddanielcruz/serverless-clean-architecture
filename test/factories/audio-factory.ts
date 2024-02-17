@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto'
 
-import type { AudioProps } from '@/domain/notes/entities/value-objects/audio'
-import { Audio, AudioFormat } from '@/domain/notes/entities/value-objects/audio'
+import type { AudioProps } from '@/domain/notes/entities/audio'
+import { Audio, AudioFormat } from '@/domain/notes/entities/audio'
 
 export function makeAudio(override?: Partial<AudioProps>): Audio {
   const format = override?.format ?? AudioFormat.MP3

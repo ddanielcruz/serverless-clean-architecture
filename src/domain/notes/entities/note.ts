@@ -2,7 +2,7 @@ import { Entity } from '@/core/entities/entity'
 import type { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import type { Optional } from '@/core/types/optional'
 
-import type { Audio } from './value-objects/audio'
+import type { Audio } from './audio'
 
 export enum NoteStatus {
   Created = 'created',

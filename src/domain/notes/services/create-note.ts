@@ -4,7 +4,7 @@ import { right, type Either } from '@/core/either'
 import type { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 import { Note } from '../entities/note'
-import { Audio, type AudioFormat } from '../entities/value-objects/audio'
+import { Audio, type AudioFormat } from '../entities/audio'
 import type { NotesRepository } from '../repositories/notes-repository'
 import type { FileUploader } from '../uploads/file-uploader'
 
