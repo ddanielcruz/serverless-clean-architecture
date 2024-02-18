@@ -11,6 +11,7 @@ export enum NoteStatus {
   Failed = 'failed',
 }
 
+// TODO Add information to delete unprocessed or long-time failed notes
 export interface NoteProps {
   userId: UniqueEntityId
   audio: Audio

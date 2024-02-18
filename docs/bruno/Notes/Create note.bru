@@ -1,0 +1,17 @@
+meta {
+  name: Create note
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/notes
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "audioFormat": "mp3"
+  }
+}

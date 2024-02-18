@@ -3,8 +3,8 @@ import { randomUUID } from 'node:crypto'
 import { right, type Either } from '@/core/either'
 import type { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
-import { Note } from '../entities/note'
 import { Audio, type AudioFormat } from '../entities/audio'
+import { Note } from '../entities/note'
 import type { NotesRepository } from '../repositories/notes-repository'
 import type { FileUploader } from '../uploads/file-uploader'
 
