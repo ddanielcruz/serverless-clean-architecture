@@ -8,6 +8,7 @@ const serverlessConfiguration: AWS = {
   useDotenv: true,
   plugins: [
     'serverless-esbuild',
+    'serverless-offline-s3',
     'serverless-offline',
     'serverless-offline-ses-v2',
     'serverless-prune-plugin',
@@ -35,6 +36,7 @@ const serverlessConfiguration: AWS = {
   },
   custom: {
     stage: '${opt:stage, self:provider.stage}',
+    bucketName: 'serverless-clean-architecture-${self:custom.stage}',
     esbuild: {
       bundle: true,
       minify: false,
@@ -54,6 +56,11 @@ const serverlessConfiguration: AWS = {
     },
     'serverless-offline-ses-v2': {
       port: 8005,
+    },
+    'serverless-offline-s3': {
+      endpoint: 'http://localhost:9000',
+      accessKey: 'development',
+      secretKey: 'development',
     },
   },
 }
