@@ -20,6 +20,11 @@ vi.mock('@aws-sdk/s3-request-presigner', async (importActual) => {
 describe('S3Adapter', () => {
   let sut: S3Adapter
 
+  beforeAll(() => {
+    process.env.AWS_ACCESS_KEY_ID = 'any-access-key'
+    process.env.AWS_SECRET_ACCESS_KEY = 'any-secret-access-key'
+  })
+
   beforeEach(() => {
     sut = new S3Adapter()
     getSignedUrlMock.mockClear()
