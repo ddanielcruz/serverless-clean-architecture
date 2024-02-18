@@ -23,7 +23,9 @@
   },
   "dependencies": {
     "@aws-lambda-powertools/logger": "^1.18.0",
+    "@aws-sdk/client-s3": "^3.515.0",
     "@aws-sdk/client-ses": "^3.504.0",
+    "@aws-sdk/s3-request-presigner": "^3.515.0",
     "@middy/core": "^3.6.2",
     "@middy/do-not-wait-for-empty-event-loop": "^5.2.3",
     "@middy/http-cors": "^5.2.3",

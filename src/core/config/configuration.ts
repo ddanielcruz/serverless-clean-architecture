@@ -22,7 +22,10 @@ const configSchema = {
   LOG_LEVEL: z.nativeEnum(LogLevel).default(LogLevel.Info),
 
   // AWS
+  AWS_REGION: z.string(),
   IS_OFFLINE: z.coerce.boolean().default(false),
+  S3_BUCKET_NAME: z.string(),
+  S3_URL_EXPIRATION: z.coerce.number().positive().int(),
 
   // Security
   ACCESS_TOKEN_SECRET: z.string(),
