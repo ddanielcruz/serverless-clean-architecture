@@ -43,6 +43,10 @@ export class Audio extends Entity<AudioProps> {
     this._props.transcription = transcription
   }
 
+  get isTranscribed(): boolean {
+    return !!this._props.transcription
+  }
+
   constructor(props: ConstructorProps, id?: UniqueEntityId | string) {
     super(
       {

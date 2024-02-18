@@ -4,7 +4,7 @@ import { S3, PutObjectCommand } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 
 import { config } from '@/core/config'
-import type { FileUploader } from '@/domain/notes/uploads/file-uploader'
+import type { FileUploader } from '@/domain/notes/protocols/file-uploader'
 
 import { S3_OFFLINE_OPTIONS } from './s3-constants'
 

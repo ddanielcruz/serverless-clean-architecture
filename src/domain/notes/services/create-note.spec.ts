@@ -5,7 +5,7 @@ import type { CreateNoteRequest } from './create-note'
 import { CreateNote } from './create-note'
 import { AudioFormat } from '../entities/audio'
 import { NoteStatus } from '../entities/note'
-import type { FileUploader } from '../uploads/file-uploader'
+import type { FileUploader } from '../protocols/file-uploader'
 
 class FileUploaderStub implements FileUploader {
   async generateUploadUrl(filename: string): Promise<string> {

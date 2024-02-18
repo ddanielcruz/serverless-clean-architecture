@@ -20,18 +20,24 @@ describe('Note', () => {
     expect(note.createdAt).toBeInstanceOf(Date)
   })
 
-  it('marks a note as processing', () => {
+  it('marks a note as uploaded', () => {
     const note = new Note({ userId, audio })
-    note.markAsProcessing()
-    expect(note.status).toBe(NoteStatus.Processing)
+    note.markAsUploaded()
+    expect(note.status).toBe(NoteStatus.Uploaded)
   })
 
-  it('marks a note as done', () => {
+  it('marks a note as transcribed', () => {
     const note = new Note({ userId, audio })
-    note.markAsDone('test summary', 'test transcription')
-    expect(note.status).toBe(NoteStatus.Done)
-    expect(note.summary).toBe('test summary')
-    expect(note.audio.transcription).toBe('test transcription')
+    note.markAsTranscribed('test')
+    expect(note.status).toBe(NoteStatus.Transcribed)
+    expect(note.audio.transcription).toBe('test')
+  })
+
+  it('marks a note as summarized', () => {
+    const note = new Note({ userId, audio })
+    note.markAsSummarized('test')
+    expect(note.status).toBe(NoteStatus.Summarized)
+    expect(note.summary).toBe('test')
   })
 
   it('marks a note as failed', () => {

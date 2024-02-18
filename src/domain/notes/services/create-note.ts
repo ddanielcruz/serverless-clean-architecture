@@ -5,8 +5,8 @@ import type { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 import { Audio, type AudioFormat } from '../entities/audio'
 import { Note } from '../entities/note'
+import type { FileUploader } from '../protocols/file-uploader'
 import type { NotesRepository } from '../repositories/notes-repository'
-import type { FileUploader } from '../uploads/file-uploader'
 
 export type CreateNoteRequest = {
   userId: UniqueEntityId

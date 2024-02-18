@@ -6,8 +6,9 @@ import type { Audio } from './audio'
 
 export enum NoteStatus {
   Created = 'created',
-  Processing = 'processing',
-  Done = 'done',
+  Uploaded = 'uploaded',
+  Transcribed = 'transcribed',
+  Summarized = 'summarized',
   Failed = 'failed',
 }
 
@@ -56,14 +57,18 @@ export class Note extends Entity<NoteProps> {
     )
   }
 
-  markAsProcessing(): void {
-    this._props.status = NoteStatus.Processing
+  markAsUploaded(): void {
+    this._props.status = NoteStatus.Uploaded
   }
 
-  markAsDone(summary: string, transcription: string): void {
-    this._props.status = NoteStatus.Done
-    this._props.summary = summary
+  markAsTranscribed(transcription: string): void {
+    this._props.status = NoteStatus.Transcribed
     this._props.audio.transcription = transcription
+  }
+
+  markAsSummarized(summary: string): void {
+    this._props.status = NoteStatus.Summarized
+    this._props.summary = summary
   }
 
   markAsFailed(): void {
