@@ -3,8 +3,8 @@ import { InMemoryNotesRepository } from '@/test/repositories/in-memory-notes-rep
 
 import type { CreateNoteRequest } from './create-note'
 import { CreateNote } from './create-note'
-import { NoteStatus } from '../entities/note'
 import { AudioFormat } from '../entities/audio'
+import { NoteStatus } from '../entities/note'
 import type { FileUploader } from '../uploads/file-uploader'
 
 class FileUploaderStub implements FileUploader {

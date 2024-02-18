@@ -5,6 +5,7 @@ import type { Optional } from '@/core/types/optional'
 export enum AudioFormat {
   MP3 = 'mp3',
   WAV = 'wav',
+  OGG = 'ogg',
 }
 
 // TODO Add information about the file size and implement a file size limit
