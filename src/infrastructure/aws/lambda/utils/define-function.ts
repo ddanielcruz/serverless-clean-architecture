@@ -2,6 +2,8 @@ import type { AWS } from '@serverless/typescript'
 
 type FunctionDefinition = Exclude<AWS['functions'], undefined>[string] & {
   protected?: boolean
+  iamRoleStatementsName?: string
+  iamRoleStatements?: AWS['provider']['iamRoleStatements']
 }
 
 export function defineFunction(
