@@ -50,7 +50,7 @@ describe('DrizzleNotesRepository', () => {
     it('updates note and audio', async () => {
       const note = makeNote({ userId: user.id })
       await sut.create(note)
-      note.markAsDone('any-summary', 'any-transcription')
+      note.markAsTranscribed('any-transcription')
       await sut.save(note)
 
       const notes = await db.select().from(s.notes)
@@ -59,8 +59,7 @@ describe('DrizzleNotesRepository', () => {
       expect(audios).toHaveLength(1)
       expect(DrizzleNoteMapper.toDrizzle(note)).toMatchObject(notes[0])
       expect(DrizzleAudioMapper.toDrizzle(note.audio)).toMatchObject(audios[0])
-      expect(notes[0].summary).toEqual('any-summary')
-      expect(notes[0].status).toEqual(NoteStatus.Done)
+      expect(notes[0].status).toEqual(NoteStatus.Transcribed)
       expect(audios[0].transcription).toEqual('any-transcription')
     })
   })
