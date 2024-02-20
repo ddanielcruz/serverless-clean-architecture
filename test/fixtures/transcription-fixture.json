@@ -1,0 +1,60 @@
+{
+  "jobName": "5d3f6999-e4b7-43d9-9776-c9481aa246d3-1708470272768",
+  "accountId": "229744700811",
+  "status": "COMPLETED",
+  "results": {
+    "transcripts": [
+      {
+        "transcript": "So today I had a meeting with Elon"
+      }
+    ],
+    "items": [
+      {
+        "type": "pronunciation",
+        "alternatives": [{ "confidence": "0.651", "content": "So" }]
+      },
+      {
+        "type": "pronunciation",
+        "alternatives": [{ "confidence": "0.919", "content": "today" }],
+        "start_time": "1.33",
+        "end_time": "1.409"
+      },
+      {
+        "type": "pronunciation",
+        "alternatives": [{ "confidence": "0.984", "content": "I" }],
+        "start_time": "1.419",
+        "end_time": "1.429"
+      },
+      {
+        "type": "pronunciation",
+        "alternatives": [{ "confidence": "0.997", "content": "had" }],
+        "start_time": "1.44",
+        "end_time": "1.659"
+      },
+      {
+        "type": "pronunciation",
+        "alternatives": [{ "confidence": "0.998", "content": "a" }],
+        "start_time": "1.669",
+        "end_time": "1.679"
+      },
+      {
+        "type": "pronunciation",
+        "alternatives": [{ "confidence": "0.999", "content": "meeting" }],
+        "start_time": "1.69",
+        "end_time": "2.309"
+      },
+      {
+        "type": "pronunciation",
+        "alternatives": [{ "confidence": "0.999", "content": "with" }],
+        "start_time": "2.46",
+        "end_time": "2.809"
+      },
+      {
+        "type": "pronunciation",
+        "alternatives": [{ "confidence": "0.997", "content": "Elon" }],
+        "start_time": "2.819",
+        "end_time": "3.43"
+      }
+    ]
+  }
+}
