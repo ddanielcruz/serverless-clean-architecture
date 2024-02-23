@@ -20,6 +20,7 @@ const configSchema = {
   DATABASE_URL: z.string().url(),
   EMAIL_SENDER: z.string().email(),
   LOG_LEVEL: z.nativeEnum(LogLevel).default(LogLevel.Info),
+  OPENAI_API_KEY: z.string(),
 
   // AWS
   AWS_REGION: z.string(),
