@@ -18,6 +18,10 @@ describe('GPTAdapter', () => {
   let sut: GPTAdapter
   let logger: Logger
 
+  beforeAll(() => {
+    process.env.OPENAI_API_KEY = 'any-api-key'
+  })
+
   beforeEach(() => {
     logger = new LoggerStub()
     sut = new GPTAdapter(logger)
