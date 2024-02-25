@@ -1,3 +1,4 @@
+import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { NoteStatus } from '@/domain/notes/entities/note'
 import { postgresContainer } from '@/test/containers/postgres-container'
 import { makeNote } from '@/test/factories/note-factory'
@@ -91,6 +92,21 @@ describe('DrizzleNotesRepository', () => {
       })
       expect(fetchedNotes).toHaveLength(5)
       expect(total).toEqual(10)
+    })
+  })
+
+  describe('getByAudioId', () => {
+    it('returns null if note is not found', async () => {
+      const note = await sut.getByAudioId(new UniqueEntityId())
+      expect(note).toBeNull()
+    })
+
+    it('returns note with audio if found', async () => {
+      const note = makeNote({ userId: user.id })
+      await sut.create(note)
+      const foundNote = await sut.getByAudioId(note.audio.id)
+      expect(foundNote).toBeTruthy()
+      expect(foundNote).toMatchObject(note)
     })
   })
 })

@@ -6,6 +6,10 @@ import type { NotesRepository } from '@/domain/notes/repositories/notes-reposito
 export class InMemoryNotesRepository implements NotesRepository {
   readonly items: Note[] = []
 
+  async create(note: Note): Promise<void> {
+    this.items.push(note)
+  }
+
   async fetchByUserId(
     userId: UniqueEntityId,
     { page, limit }: Pagination,
@@ -17,8 +21,8 @@ export class InMemoryNotesRepository implements NotesRepository {
     return [notes.slice(start, end), notes.length]
   }
 
-  async create(note: Note): Promise<void> {
-    this.items.push(note)
+  async getByAudioId(audioId: UniqueEntityId): Promise<Note | null> {
+    return this.items.find((n) => n.audio.id.equals(audioId)) ?? null
   }
 
   async save(note: Note): Promise<void> {

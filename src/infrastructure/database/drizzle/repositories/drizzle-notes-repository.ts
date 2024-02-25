@@ -46,6 +46,18 @@ export class DrizzleNotesRepository implements NotesRepository {
     return [notes, total]
   }
 
+  async getByAudioId(audioId: UniqueEntityId): Promise<Note | null> {
+    const output = await this.db
+      .select()
+      .from(s.notes)
+      .where(eq(s.notes.audioId, audioId.toString()))
+      .innerJoin(s.audios, eq(s.audios.id, s.notes.audioId))
+      .limit(1)
+    const note = output[0]
+
+    return note ? DrizzleNoteMapper.toDomain(note.notes, note.audios) : null
+  }
+
   async save(note: Note): Promise<void> {
     await this.db.transaction(async (trx) => {
       const { audio: audioData, ...noteData } =

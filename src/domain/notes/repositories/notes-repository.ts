@@ -9,5 +9,6 @@ export interface NotesRepository {
     userId: UniqueEntityId,
     pagination: Pagination,
   ): Promise<[Note[], number]>
+  getByAudioId(audioId: UniqueEntityId): Promise<Note | null>
   save(note: Note): Promise<void>
 }
