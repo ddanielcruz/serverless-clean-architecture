@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 import type { LogMessage, Logger } from '@/core/protocols/logger'
+import { LoggerStub } from '@/test/stubs/logger-stub'
 
 import { ErrorHandlerMiddleware } from './error-handler-middleware'
 import type {
@@ -18,28 +19,6 @@ class StubHttpController implements HttpController {
   }
 }
 
-class LoggerStub implements Logger {
-  info(message: LogMessage): void {
-    console.log(message)
-  }
-
-  error(message: Error | LogMessage): void {
-    console.error(message)
-  }
-
-  warn(message: LogMessage): void {
-    console.warn(message)
-  }
-
-  debug(message: LogMessage): void {
-    console.debug(message)
-  }
-
-  critical(message: LogMessage): void {
-    console.error(message)
-  }
-}
-
 describe('ErrorHandlerMiddleware', () => {
   let sut: ErrorHandlerMiddleware
   let controllerStub: StubHttpController
@@ -50,6 +29,7 @@ describe('ErrorHandlerMiddleware', () => {
     headers: {},
     query: {},
     ipAddress: 'any-ip',
+    session: null,
   }
 
   beforeEach(() => {

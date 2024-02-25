@@ -3,16 +3,9 @@ import type { Logger } from '@/core/protocols/logger'
 import { FailedToSummarizeNoteError } from '@/domain/notes/protocols/summarizer'
 import { makeAudio } from '@/test/factories/audio-factory'
 import { makeNote } from '@/test/factories/note-factory'
+import { LoggerStub } from '@/test/stubs/logger-stub'
 
 import { GPTAdapter } from './gpt-adapter'
-
-class LoggerStub implements Logger {
-  debug(): void {}
-  info(): void {}
-  warn(): void {}
-  error(): void {}
-  critical(): void {}
-}
 
 describe('GPTAdapter', () => {
   let sut: GPTAdapter
