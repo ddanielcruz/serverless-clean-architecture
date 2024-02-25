@@ -4,6 +4,8 @@ import { makeNote } from '@/test/factories/note-factory'
 import { InMemoryNotesRepository } from '@/test/repositories/in-memory-notes-repository'
 
 import { RequestNoteTranscription } from './request-note-transcription'
+import type { Note } from '../entities/note'
+import { NoteStatus } from '../entities/note'
 import type { Transcriber } from '../protocols/transcriber'
 
 class TranscriberStub implements Transcriber {
@@ -22,12 +24,13 @@ describe('RequestNoteTranscription', () => {
   let sut: RequestNoteTranscription
   let notesRepository: InMemoryNotesRepository
   let transcriber: TranscriberStub
-  const note = makeNote()
+  let note: Note
 
   beforeEach(() => {
     notesRepository = new InMemoryNotesRepository()
     transcriber = new TranscriberStub()
     sut = new RequestNoteTranscription(notesRepository, transcriber)
+    note = makeNote()
     notesRepository.items.push(note)
   })
 
@@ -43,6 +46,13 @@ describe('RequestNoteTranscription', () => {
 
     expect(response.isLeft()).toBe(true)
     expect(response.value).toBeInstanceOf(ResourceNotFoundError)
+  })
+
+  it('marks note as uploaded', async () => {
+    const saveSpy = vi.spyOn(notesRepository, 'save')
+    await sut.execute({ audioId: note.audio.id })
+    expect(note.status).toEqual(NoteStatus.Uploaded)
+    expect(saveSpy).toHaveBeenCalledWith(note)
   })
 
   it('requests a transcription using Transcriber', async () => {

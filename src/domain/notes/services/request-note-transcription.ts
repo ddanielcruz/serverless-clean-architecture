@@ -29,6 +29,9 @@ export class RequestNoteTranscription {
       return left(new ResourceNotFoundError())
     }
 
+    note.markAsUploaded()
+    await this.notesRepository.save(note)
+
     const audio = note.audio as Audio
     const { transcriptionId } =
       await this.transcriber.requestTranscription(audio)
