@@ -5,32 +5,25 @@ import { ZodError } from 'zod'
 import { left, right } from '@/core/either'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
-import type { Logger } from '@/core/protocols/logger'
 import type { RequestNoteTranscription } from '@/domain/notes/services/request-note-transcription'
-import { LoggerStub } from '@/test/stubs/logger-stub'
 
 import { RequestNoteTranscriptionController } from './request-note-transcription-controller'
 import type { QueueRequest } from '../../protocols/queue-controller'
 
 describe('RequestNoteTranscriptionController', () => {
   let sut: RequestNoteTranscriptionController
-  let logger: Logger
   let requestNoteTranscription: RequestNoteTranscription
   const queueRequest = {
     data: { audioId: randomUUID() },
   } satisfies QueueRequest
 
   beforeEach(() => {
-    logger = new LoggerStub()
     requestNoteTranscription = {
       execute: vi
         .fn()
         .mockResolvedValue(right({ transcriptionId: 'any-transcription-id' })),
     } as unknown as RequestNoteTranscription
-    sut = new RequestNoteTranscriptionController(
-      logger,
-      requestNoteTranscription,
-    )
+    sut = new RequestNoteTranscriptionController(requestNoteTranscription)
   })
 
   it('throws if data is invalid', async () => {
