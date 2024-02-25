@@ -11,6 +11,8 @@ import {
   type Transcriber,
 } from '@/domain/notes/protocols/transcriber'
 
+import { makeTranscriptionIdFromAudioId } from './transcription-id'
+
 interface TranscriptionOutput {
   results: {
     transcripts: { transcript: string }[]
@@ -50,7 +52,7 @@ export class TranscribeAdapter implements Transcriber {
   async requestTranscription(
     audio: Audio,
   ): Promise<{ transcriptionId: string }> {
-    const transcriptionId = `${audio.id.toString()}-${Date.now()}`
+    const transcriptionId = makeTranscriptionIdFromAudioId(audio.id)
     const bucketName = config.get('S3_BUCKET_NAME')
     const command = new StartTranscriptionJobCommand({
       TranscriptionJobName: transcriptionId,
