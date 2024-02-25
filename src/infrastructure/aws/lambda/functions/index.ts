@@ -1,5 +1,7 @@
 export { default as authorizer } from './authorizer'
 export { default as notesCreate } from './notes-create'
+export { default as notesTranscribed } from './notes-transcribed'
+export { default as notesUploaded } from './notes-uploaded'
 export { default as sessionsConfirm } from './sessions-confirm'
 export { default as sessionsCreate } from './sessions-create'
 export { default as sessionsDelete } from './sessions-delete'

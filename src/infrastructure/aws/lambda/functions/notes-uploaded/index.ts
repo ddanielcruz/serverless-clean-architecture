@@ -20,12 +20,7 @@ export default defineFunction({
     s3: {
       bucket: '${env:S3_BUCKET_NAME}',
       event: 's3:ObjectCreated:*',
-      rules: [
-        {
-          prefix: `uploads/`,
-          suffix: `.${format}`,
-        },
-      ],
+      rules: [{ prefix: `uploads/` }, { suffix: `.${format}` }],
     },
   })),
 })
