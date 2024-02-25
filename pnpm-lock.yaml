@@ -35,9 +35,6 @@ dependencies:
   '@middy/http-security-headers':
     specifier: ^5.2.3
     version: 5.2.3
-  '@middy/sqs-partial-batch-failure':
-    specifier: ^5.2.3
-    version: 5.2.3
   '@react-email/components':
     specifier: 0.0.14
     version: 0.0.14(@types/react@18.2.51)(react@18.2.0)
@@ -3063,11 +3060,6 @@ packages:
     engines: {node: '>=18'}
     dependencies:
       '@middy/util': 5.2.3
-    dev: false
-
-  /@middy/sqs-partial-batch-failure@5.2.3:
-    resolution: {integrity: sha512-s/B2qKZCkcwXZQS1CA14Io3GlHZVucphtLmPP8HmAqvOXl6n49GEfZAfp1YGsQV8JHPOEgAXxheY+b+9oJ0o7w==}
-    engines: {node: '>=18'}
     dev: false
 
   /@middy/util@3.6.2:
